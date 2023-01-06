@@ -539,7 +539,8 @@ class RequestHelper
 	 * @param Boolean $change_title
 	 * @return void
 	 */
-	public function push_notification_ios($push_tittle, $data, $user_type, $device_id,$change_title = 0,$firebase_data=array(),$user) {
+	public function push_notification_ios($push_tittle, $data, $user_type, $device_id,$change_title,$firebase_data,$user) {
+		
 		try {
 			$title = $user_type;
 			if ($change_title) {
@@ -764,6 +765,7 @@ class RequestHelper
 	 */
 	public function SendPushNotification($user,$push_data)
 	{
+		
 		$device_type = $user->device_type;
         $device_id = $user->device_id;
         $user_type = $user->user_type;

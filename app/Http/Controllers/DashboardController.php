@@ -334,4 +334,8 @@ class DashboardController extends Controller
         $data['result'] = Auth::user();
         return view('dashboard.rides',$data);
     }
+    public function groups(){
+        $data['result'] = Auth::user();
+        return view('dashboard.group',$data);
+    }
 }

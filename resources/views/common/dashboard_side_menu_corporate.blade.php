@@ -25,7 +25,7 @@
 						<a href="{{ route('rides') }}" aria-selected="{{ (Route::current()->uri() == 'rides') ? 'true' : 'false' }}" class="side-nav-a">Rides</a>
 					</li>
 					<li>
-						<a href="#" aria-selected="{{ (Route::current()->uri() == 'profile') ? 'true' : 'false' }}" class="side-nav-a">Groups</a>
+						<a href="{{ route('group') }}" aria-selected="{{ (Route::current()->uri() == 'profile') ? 'true' : 'false' }}" class="side-nav-a">Groups</a>
 					</li>
 					<li>
 						<a href="#" aria-selected="{{ (Route::current()->uri() == 'profile') ? 'true' : 'false' }}" class="side-nav-a">Policies</a>

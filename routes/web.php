@@ -120,6 +120,7 @@ Route::group(['middleware' => ['locale','rider_guest']], function () {
 Route::group(['middleware' => ['locale','corporate_guest']], function () {
     Route::get('corporate', 'DashboardController@corporate');
     Route::get('rides', 'DashboardController@rides')->name('rides');
+    Route::get('group', 'DashboardController@groups')->name('group');
 
 });
 
