@@ -20,7 +20,11 @@
 					<div class="box-header with-border">
 						<h3 class="box-title"> Add Rider Form </h3>
 					</div>
-					{!! Form::open(['url' => 'admin/add_rider', 'class' => 'form-horizontal']) !!}
+					@if(LOGIN_USER_TYPE=='corporate')
+						{!! Form::open(['url' => 'corporate/add_rider', 'class' => 'form-horizontal']) !!}
+					@else
+						{!! Form::open(['url' => 'admin/add_rider', 'class' => 'form-horizontal']) !!}
+					@endif
 					<div class="box-body">
 						<span class="text-danger">(*)Fields are Mandatory</span>
 						<div class="form-group">
@@ -81,6 +85,20 @@
 								<span class="text-danger">{{ $errors->first('mobile_number') }}</span>
 							</div>
 						</div>
+						@if(LOGIN_USER_TYPE=='corporate')
+							<div class="form-group">
+							<label for="input_status" class="col-sm-3 control-label">Group<em class="text-danger">*</em></label>
+							<div class="col-md-7 col-sm-offset-1">
+								<select class ='form-control' id = 'input_country_code' name='group_id' required>
+									<option>Select Group</option>
+									@foreach($groups as $group)
+										<option value="{{$group->id}}" data-id="{{ $group->id }}" {{ ($group->id == old('group_id')) ? 'Selected' : ''}}>{{$group->name}}</option>
+									@endforeach
+								</select>
+								<span class="text-danger">{{ $errors->first('group_id') }}</span>
+							</div>
+						</div>
+						@endif
 						<div class="form-group">
 							<label for="input_password" class="col-sm-3 control-label">Home Location</label>
 							<div class="col-md-7 col-sm-offset-1">
@@ -118,6 +136,9 @@
 						</div>
 						{!! Form::hidden('work_latitude',@$location->work_latitude, ['class' => 'form-control', 'id' => 'work_latitude', 'placeholder' => 'Select']) !!}
 						{!! Form::hidden('work_longitude',@$location->work_longitude, ['class' => 'form-control', 'id' => 'work_longitude', 'placeholder' => 'Select']) !!}
+					    @if(LOGIN_USER_TYPE=='corporate')
+							{!! Form::hidden('corporate_id',auth('corporate')->id(), ['class' => 'form-control', 'id' => 'corporate', 'placeholder' => 'Select']) !!}
+						@endif
 					</div>
 					<div class="box-footer text-center">
 						<button type="submit" class="btn btn-info" name="submit" value="submit">Submit</button>

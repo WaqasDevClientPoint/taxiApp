@@ -44,8 +44,8 @@ class RiderDataTable extends DataTable
                 return protectedString($users->email);
             })
             ->addColumn('action', function ($users) {
-                $edit = $this->edit ? '<a href="'.url('admin/edit_rider/'.$users->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;' : '';
-                $delete = $this->delete ? '<a data-href="'.url('admin/delete_rider/'.$users->id).'" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#confirm-delete"><i class="glyphicon glyphicon-trash"></i></a>&nbsp;':'';
+                $edit = $this->edit ? '<a href="'.url(LOGIN_USER_TYPE.'/edit_rider/'.$users->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;' : '';
+                $delete = $this->delete ? '<a data-href="'.url(LOGIN_USER_TYPE.'/delete_rider/'.$users->id).'" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#confirm-delete"><i class="glyphicon glyphicon-trash"></i></a>&nbsp;':'';
 
                 return $edit.$delete;
             });
@@ -59,8 +59,9 @@ class RiderDataTable extends DataTable
      */
     public function query(User $model)
     {
-        $this->edit = auth('admin')->user()->can('update_rider');
-        $this->delete = auth('admin')->user()->can('delete_rider');
+
+        $this->edit = (LOGIN_USER_TYPE=='corporate' || auth('admin')->user()->can('update_rider'));
+        $this->delete = (auth()->guard('corporate')->user()!=null || auth('admin')->user()->can('delete_rider'));
         $users = DB::Table('users')->select(
             'users.id as id',
             'users.first_name',
@@ -78,7 +79,12 @@ class RiderDataTable extends DataTable
             'users.status',
             'users.created_at',
             DB::raw('CONCAT("XXXXXX",Right(users.mobile_number,4)) AS hidden_mobile')
-        )->where('user_type','Rider')->groupBy('id');
+        );
+        $users=$users->where('user_type','Rider');
+        if(LOGIN_USER_TYPE=='corporate'){
+            $users=$users->where('corporate_id',auth('corporate')->id());
+        }
+        $users=$users->groupBy('id');
         return $users;
     }
 

@@ -16,7 +16,7 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Edit Rider Form</h3>
                         </div>
-                        {!! Form::open(['url' => 'admin/edit_group/'.$result->id, 'class' => 'form-horizontal']) !!}
+                        {!! Form::open(['url' => 'corporate/edit_group/'.$result->id, 'class' => 'form-horizontal']) !!}
                         <div class="box-body">
                             <span class="text-danger">(*)Fields are Mandatory</span>
                             <div class="form-group">

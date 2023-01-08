@@ -13,6 +13,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\RiderDataTable;
@@ -54,8 +55,19 @@ class RiderController extends Controller
         if($request->isMethod('GET')) {
             $data['country_code_option'] = Country::select('long_name','phone_code','id')->get();
             $data['google_api'] = ApiCredentials::where('id','');
+            if(LOGIN_USER_TYPE=='corporate'){
+                $data['groups'] = Group::where('corporate_id',auth('corporate')->id())->get();
+            }
             return view('admin.rider.add',$data);
         }
+        $group="";
+        $group_message="";
+
+        if(LOGIN_USER_TYPE=='corporate'){
+            $group="'group_id' => 'required'";
+            $group_message="'group_id' => 'Group'";
+        }
+
         if($request->submit) {
             $rules = array(
                 'first_name'    => 'required',
@@ -66,6 +78,7 @@ class RiderController extends Controller
                 'gender'        => 'required',
                 'user_type'     => 'required',
                 'status'        => 'required',
+                $group
             );
 
             // Add Rider Validation Custom Names
@@ -79,6 +92,7 @@ class RiderController extends Controller
                 'user_type' => trans('messages.user.user_type'),
                 'mobile_number' => trans('messages.user.mobile'),
                 'status' => trans('messages.driver_dashboard.status'),
+                $group_message
             );
 
             // Edit Rider Validation Custom Fields message
@@ -121,7 +135,11 @@ class RiderController extends Controller
             $user->password     = $request->password;
             $user->user_type    = $request->user_type;
             $user->status       = $request->status;
-            $user->save();
+            if(LOGIN_USER_TYPE=='corporate') {
+                $user->corporate_id = auth('corporate')->id();
+                $user->group_id = $request->group_id;
+            }
+                $user->save();
 
             $user_pic = new ProfilePicture;
             $user_pic->user_id      = $user->id;
@@ -141,7 +159,10 @@ class RiderController extends Controller
            
             flashMessage('success', 'Added Successfully');
         }
-        return redirect('admin/rider');
+
+            return redirect(LOGIN_USER_TYPE.'/rider');
+
+
     }
 
     /**
@@ -160,7 +181,7 @@ class RiderController extends Controller
                 return view('admin.rider.edit', $data);
             }
             flashMessage('danger', 'Invalid ID');
-            return redirect('admin/rider');
+            return redirect(LOGIN_USER_TYPE.'/rider');
         }
         if($request->submit) {
             $rules = array(
@@ -250,7 +271,7 @@ class RiderController extends Controller
             flashMessage('success', trans('messages.user.update_success'));
         }
 
-        return redirect('admin/rider');
+        return redirect(LOGIN_USER_TYPE.'/rider');
     }
 
     /**
@@ -277,7 +298,7 @@ class RiderController extends Controller
         }
 
         flashMessage('success', 'Deleted Successfully');
-        return redirect('admin/rider');
+        return redirect(LOGIN_USER_TYPE.'/rider');
     }
 
     // Check Given User deletable or not

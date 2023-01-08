@@ -19,8 +19,13 @@
 					<div class="box-header with-border">
 						<h3 class="box-title"> Add Rider Form </h3>
 					</div>
-					<?php echo Form::open(['url' => 'admin/add_rider', 'class' => 'form-horizontal']); ?>
+					<?php if(LOGIN_USER_TYPE=='corporate'): ?>
+						<?php echo Form::open(['url' => 'corporate/add_rider', 'class' => 'form-horizontal']); ?>
 
+					<?php else: ?>
+						<?php echo Form::open(['url' => 'admin/add_rider', 'class' => 'form-horizontal']); ?>
+
+					<?php endif; ?>
 					<div class="box-body">
 						<span class="text-danger">(*)Fields are Mandatory</span>
 						<div class="form-group">
@@ -90,6 +95,20 @@
 								<span class="text-danger"><?php echo e($errors->first('mobile_number')); ?></span>
 							</div>
 						</div>
+						<?php if(LOGIN_USER_TYPE=='corporate'): ?>
+							<div class="form-group">
+							<label for="input_status" class="col-sm-3 control-label">Group<em class="text-danger">*</em></label>
+							<div class="col-md-7 col-sm-offset-1">
+								<select class ='form-control' id = 'input_country_code' name='group_id' required>
+									<option>Select Group</option>
+									<?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<option value="<?php echo e($group->id); ?>" data-id="<?php echo e($group->id); ?>" <?php echo e(($group->id == old('group_id')) ? 'Selected' : ''); ?>><?php echo e($group->name); ?></option>
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+								</select>
+								<span class="text-danger"><?php echo e($errors->first('group_id')); ?></span>
+							</div>
+						</div>
+						<?php endif; ?>
 						<div class="form-group">
 							<label for="input_password" class="col-sm-3 control-label">Home Location</label>
 							<div class="col-md-7 col-sm-offset-1">
@@ -134,6 +153,10 @@
 
 						<?php echo Form::hidden('work_longitude',@$location->work_longitude, ['class' => 'form-control', 'id' => 'work_longitude', 'placeholder' => 'Select']); ?>
 
+					    <?php if(LOGIN_USER_TYPE=='corporate'): ?>
+							<?php echo Form::hidden('corporate_id',auth('corporate')->id(), ['class' => 'form-control', 'id' => 'corporate', 'placeholder' => 'Select']); ?>
+
+						<?php endif; ?>
 					</div>
 					<div class="box-footer text-center">
 						<button type="submit" class="btn btn-info" name="submit" value="submit">Submit</button>
