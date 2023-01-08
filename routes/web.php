@@ -170,7 +170,6 @@ Route::get('sign_out', function () {
 });
 
 Route::group(['prefix' => (LOGIN_USER_TYPE=='company')?'company':'admin', 'middleware' =>'admin_guest'], function () {
-
 	if (LOGIN_USER_TYPE == 'company') {
 		Route::get('logout', function () {
 			Auth::guard('company')->logout();
@@ -185,6 +184,22 @@ Route::group(['prefix' => (LOGIN_USER_TYPE=='company')?'company':'admin', 'middl
 		Route::get('update_payout_settings','CompanyController@payoutUpdate')->name('company.update_payout_settings');
 		Route::post('set_session', 'HomeController@set_session');
 	}
+});
+Route::group(['prefix' => (LOGIN_USER_TYPE=='corporate')?'corporate':'admin', 'middleware' =>'admin_guest'], function () {
+    if (LOGIN_USER_TYPE == 'corporate') {
+        Route::get('logout', function () {
+            Auth::guard('corporate')->logout();
+            return redirect('signin_corporate');
+        });
+        Route::get('profile', function () {
+            return redirect('corporate/edit_corporate/'.auth('corporate')->id());
+        });
+
+        Route::match(['get', 'post'],'payout_preferences','CompanyController@payout_preferences')->name('company_payout_preference');
+        Route::post('update_payout_preference','CompanyController@updatePayoutPreference')->name('company.update_preference');
+        Route::get('update_payout_settings','CompanyController@payoutUpdate')->name('company.update_payout_settings');
+        Route::post('set_session', 'HomeController@set_session');
+    }
 });
 
 Route::get('clear__l--log', 'HomeController@clearLog');

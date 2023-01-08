@@ -16,7 +16,7 @@
     </ol>
   </section>
 
-  @if(LOGIN_USER_TYPE=='company' || auth('admin')->user()->can('manage_trips'))
+  @if(LOGIN_USER_TYPE=='company' || LOGIN_USER_TYPE=='corporate' || auth('admin')->user()->can('manage_trips'))
   <!-- Main content -->
   <section class="content">
     <!-- Small boxes (Stat box) -->

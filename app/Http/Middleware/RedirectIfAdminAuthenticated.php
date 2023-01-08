@@ -37,6 +37,14 @@ class RedirectIfAdminAuthenticated
             return redirect('signin_company');
         }
 
+        if ($request->segment(1)=='corporate' && Auth::guard('corporate')->guest()) {
+            return redirect('signin_corporate');
+        }elseif($request->segment(1)=='corporate' && Auth::guard('corporate')->user()->status == 'Inactive'){
+            Auth::guard('corporate')->logout();
+            $this->helper->flash_message('danger', 'Admin deactivated your account..');
+            return redirect('signin_corporate');
+        }
+
         if ($request->segment(1)=='admin' && Auth::guard('admin')->guest()) {
             return redirect('admin/login');
         } else if ($request->segment(1)=='admin' && Auth::guard('admin')->user()->status == 'Inactive') {

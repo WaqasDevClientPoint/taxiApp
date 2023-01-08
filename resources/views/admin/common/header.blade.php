@@ -24,6 +24,9 @@
             if(LOGIN_USER_TYPE=='company'){
               $user = Auth::guard('company')->user();
               $company_user = true;
+            }elseif (LOGIN_USER_TYPE=='corporate'){
+              $user = Auth::guard('corporate')->user();
+              $company_user = true;
             }else{
               $user = Auth::guard('admin')->user();
               $company_user = false;

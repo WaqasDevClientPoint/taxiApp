@@ -140,7 +140,7 @@ app.controller('user', ['$scope', '$http', '$compile','fileUploadService', funct
 					else if($('#user_type').val() == 'Rider')
 						window.location.href = "profile";
 					else
-						window.location.href = "corporate";
+						window.location.href = "corporate/dashboard";
 
 				} else {
 					$('.email-error').addClass("hide");

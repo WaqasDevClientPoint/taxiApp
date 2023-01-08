@@ -1,9 +1,6 @@
 <title>Rides</title>
 @extends('template_dashboard_corporate')
 @section('main')
-    <h1>Hello</h1>
-   
-
     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 flexbox__item page-content" style="padding:0px;" ng-controller="trip" ng-cloak>
         <input type="hidden" name="user_id" value="{{ @Auth::user()->id}}" id="user_id">
         <div class="hidden--palm">

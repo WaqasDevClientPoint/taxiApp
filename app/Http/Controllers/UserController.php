@@ -87,15 +87,14 @@ class UserController extends Controller
 						}
 					}
                     else if ($data->user_type=='Corporate') {
-                        $user = User::where('mobile_number', $credential)->first();
-
-                        if ($user) {
-                            if ($user->status == "Inactive") {
-                                Auth::guard('web')->logout();
-                                return ['status' => 'false', 'error' => trans('messages.user.disabled_account'), 'success' => 'true'];
+                        $company = App\Corporate::where('mobile_number', $credential)->first();
+                        if ($company) {
+                            if ($company->status == "Inactive") {
+                                Auth::guard('corporate')->logout();
+                                return ['status' => 'false', 'error' => trans('messages.user.disabled_company_account'), 'success' => 'true'];
                             }
                             Session::put('login_type', 'mobile_number');
-                            return ['status' => 'true', 'error' => '', 'success' => 'false', 'user_detail' => '+' . $user->country_code . ' ' . $user->mobile_number];
+                            return ['status' => 'true', 'error' => '', 'success' => 'false', 'user_detail' => '+' . $company->country_code . ' ' . $company->mobile_number];
                         } else {
                             return ['status' => 'false', 'error' => trans('messages.user.no_recognize') . SITE_NAME, 'success' => 'false'];
                         }
@@ -157,7 +156,7 @@ class UserController extends Controller
 							$guard = Auth::guard('company')->attempt(['mobile_number' => $data->email, 'password' => $data->password,'country_id'=>$data->country_id]);
 						}
                         else if ($data->user_type=='Corporate') {
-                            $guard = Auth::guard('web')->attempt(['mobile_number' => $data->email, 'password' => $data->password]);
+                            $guard = Auth::guard('corporate')->attempt(['mobile_number' => $data->email, 'password' => $data->password]);
                         }
 						else{
 							$guard = Auth::guard('web')->attempt(['mobile_number' => $data->email, 'password' => $data->password, 'user_type' => $data->user_type,'country_id'=>$data->country_id]);
@@ -180,7 +179,10 @@ class UserController extends Controller
 
 						if ($data->user_type=='Company') {
 							$guard = Auth::guard('company')->attempt(['email' => $data->email, 'password' => $data->password]);
-						}else{
+						}elseif ($data->user_type=='Corporate') {
+                            $guard = Auth::guard('corporate')->attempt(['email' => $data->email, 'password' => $data->password]);
+                        }
+						else{
 							$guard = Auth::guard('web')->attempt(['email' => $data->email, 'password' => $data->password, 'user_type' => $data->user_type]);
 						}
 
@@ -239,6 +241,9 @@ class UserController extends Controller
 	}
     public function signin_corporate()
     {
+        if (Auth::guard('company')->user() != null) {
+            return redirect('corporate/dashboard');
+        }
         return view('user.signin_corporate');
     }
 
@@ -257,13 +262,10 @@ class UserController extends Controller
 
 	public function signup_corporate(){
 
-            $fb_user_data = Session::get('fb_user_data');
-            $data = array();
-            if ($fb_user_data) {
-                $data['user'] = $fb_user_data;
-            }
-
-            return view('corporate.signup_corporate', $data);
+        if (Auth::guard('company')->user() != null) {
+            return redirect('company/dashboard');
+        }
+        return view('corporate.signup_corporate');
 	}
 
 	public function forgot_password()
@@ -654,43 +656,31 @@ class UserController extends Controller
     {
 
         $rules = array(
-            'first_name' 	=> 'required',
-            'last_name' 	=> 'required',
+            'name' => 'required',
             'mobile_number' => 'required|numeric|regex:/[0-9]{6}/',
-            'password'		=> 'required|min:6',
-            'country_code' 	=> 'required',
-            'user_type' 	=> 'required',
-            'gender' 		=> 'required',
-            'referral_code' => 'nullable|exists:users,referral_code',
-            'company_name'  => 'required'
+            'password' => 'required|min:6',
+            'country_code' => 'required',
         );
 
         $messages = array(
-            'required'              => ':attribute '.trans('messages.home.field_is_required').'',
-            'mobile_number.regex' 	=> trans('messages.user.mobile_no'),
-            'referral_code.exists' 	=> trans('messages.referrals.enter_valid_referral_code'),
+            'required'                => ':attribute '.trans('messages.home.field_is_required').'',
+
+            'mobile_number.regex' => trans('messages.user.mobile_no'),
         );
 
         $attributes = array(
-            'first_name' 	=> trans('messages.user.firstname'),
-            'last_name' 	=> trans('messages.user.lastname'),
-            'email' 		=> trans('messages.user.email'),
-            'password' 		=> trans('messages.user.paswrd'),
-            'country_code'	=> trans('messages.user.country_code'),
-            'gender' 		=> trans('messages.profile.gender'),
-            'user_type' 	=> trans('messages.user.user_type'),
+            'name' => trans('messages.profile.name'),
+            'email' => trans('messages.user.email'),
+            'password' => trans('messages.user.paswrd'),
+            'country_code' => trans('messages.user.country_code'),
             'mobile_number' => trans('messages.user.mobile'),
-            'referral_code' => trans('messages.referrals.referral_code'),
-            'company_name' => trans('messages.user.companyname'),
-
         );
 
-        $validator = Validator::make($request->all(), $rules, $messages, $attributes);
+        $validator = Validator::make($request->all(), $rules, $messages,$attributes);
 
-        $validator->after(function($validator) use($request) {
-
-            $user = User::where('mobile_number', $request->mobile_number)->where('user_type', $request->user_type)->where('country_id', $request->country_id)->count();
-            if($user) {
+        $validator->after(function ($validator) use($request) {
+            $company = App\Corporate::where('mobile_number', $request->mobile_number)->where('country_id', $request->country_id)->count();
+            if($company) {
                 $validator->errors()->add('mobile_number',trans('messages.user.mobile_no_exists'));
             }
 
@@ -698,19 +688,14 @@ class UserController extends Controller
                 if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
                     $validator->errors()->add('email',trans('messages.user.invalid_email'));
                 }
-                $user_email = User::where('email', $request->email)->where('user_type', $request->user_type)->count();
-                if($user_email) {
+                $company_email = App\Corporate::where('email', $request->email)->count();
+                if($company_email) {
                     $validator->errors()->add('email',trans('messages.user.email_exists'));
                 }
             }
-
-            $referral_check = User::whereUserType(ucfirst($request->user_type))->where('referral_code',$request->referral_code)->count();
-            if($request->referral_code != '' && $referral_check == 0)  {
-                $validator->errors()->add('referral_code',__('messages.referrals.enter_valid_referral_code'));
-            }
         });
 
-        if($request->request_type == 'send_otp') {  //send OTP
+        if ($request->request_type == 'send_otp') {  //send OTP
             if (count($validator->errors())) {
                 return json_encode(['status_code' => 0,'messages' => $validator->errors()]);
             }
@@ -733,79 +718,33 @@ class UserController extends Controller
             }
 
             return json_encode($return_data);
-        }
-        elseif($request->request_type == 'resend_otp'){ //resend OTP
+        }elseif($request->request_type == 'resend_otp'){ //resend OTP
             $otp_responce = $this->otp_helper->resendOtp();
             return json_encode($otp_responce);
         }elseif($request->request_type == 'check_otp'){ //OTP submit
-            if(count($validator->errors())) {
-                return json_encode(['status_code' => 2,'messages' => $validator->errors()]);
-            }
             $check_otp_responce = $this->otp_helper->checkOtp($request->otp,$request->mobile_number,$request->country_code);
             return json_encode($check_otp_responce);
-        }elseif($validator->fails()) {
-            return back()->withErrors($validator)->withInput(); // Form calling with
-        } else {
+        }else if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }else {
 
-            $corporate = new App\Models\Corporate();
-            $corporate->name = $request->company_name;
-            $corporate->save();
+            $company = new App\Corporate();
+            $company->name = $request->name;
+            $company->email = $request->email;
+            $company->country_code = $request->country_code;
+            $company->country_id = $request->country_id;
 
-            $user = new User;
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
-            $user->email = $request->email;
-            $user->country_code = $request->country_code;
-            $user->mobile_number = $request->mobile_number;
-            $user->gender = $request->gender;
-            $user->password = $request->password;
-            $user->user_type = $request->user_type;
-            $user->used_referral_code = $request->referral_code;
-            $user->country_id = $request->country_id;
-            $user->corporate_id = $corporate->id;
+            $company->mobile_number = $request->mobile_number;
+            $company->password = $request->password;
+            $company->save();
 
-            if ($request->fb_id != null && $request->fb_id != "") {
-                $user->fb_id = $request->fb_id;
-            }
-            $user->status = "Active";
-            $user->save();
-
-            $user_pic = new ProfilePicture;
-
-            $user_pic->user_id = $user->id;
-            if ($request->fb_id != null && $request->fb_id != "") {
-                $user_pic->src = "https://graph.facebook.com/" . $request->fb_id . "/picture?type=large";
-                $user_pic->photo_source = 'Facebook';
-                Session::forget('fb_user_data');
-            } else {
-                $user_pic->src = "";
-                $user_pic->photo_source = 'Local';
-            }
-
-            $user_pic->save();
-
-            $location = new RiderLocation;
-
-            $location->user_id = $user->id;
-            $location->home = '';
-            $location->work = '';
-            $location->home_latitude = '';
-            $location->home_longitude = '';
-            $location->work_latitude = '';
-            $location->work_longitude = '';
-
-
-
-            $location->save();
-
-            if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => 'Corporate'])) {
+            if (Auth::guard('corporate')->attempt(['email' => $request->email, 'password' => $request->password])) {
 
                 flashMessage('success', trans('messages.user.register_successfully'));
-                return redirect()->intended('trip'); // Redirect to dashboard page
+                return redirect('company/edit_company/'.$company->id);
 
             } else {
-                // flashMessage('danger', trans('messages.login_failed'));
-                return redirect('signin_rider'); // Redirect to login page
+                return redirect('signin_corporate');
             }
         }
 

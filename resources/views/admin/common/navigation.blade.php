@@ -11,6 +11,10 @@
 						$user = Auth::guard('company')->user();
 						$company_user = true;
 						$first_segment = 'company';
+					}elseif(LOGIN_USER_TYPE=='corporate'){
+						$user = Auth::guard('corporate')->user();
+						$company_user = true;
+						$first_segment = 'corporate';
 					}
 					else{
 						$user = Auth::guard('admin')->user();
