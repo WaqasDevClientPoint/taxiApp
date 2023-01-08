@@ -66,6 +66,9 @@
 			@if($corporate_user || @$user->can('view_rider'))
 			<li class="{{ (Route::current()->uri() == $first_segment.'/rider') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/rider') }}"><i class="fa fa-users"></i><span>Manage Riders</span></a></li>
 			@endif
+			@if($corporate_user || @$user->can('view_policies'))
+				<li class="{{ (Route::current()->uri() == $first_segment.'/policies') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/policies') }}"><i class="fa fa-cog"></i><span>Manage Policies</span></a></li>
+			@endif
 
 			@if($corporate_user)
 				<li class="{{ (Route::current()->uri() == $first_segment.'/group') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/group') }}"><i class="fa fa-users"></i><span>Manage Groups</span></a></li>

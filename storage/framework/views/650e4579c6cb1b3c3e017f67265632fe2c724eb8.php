@@ -66,6 +66,9 @@
 			<?php if($corporate_user || @$user->can('view_rider')): ?>
 			<li class="<?php echo e((Route::current()->uri() == $first_segment.'/rider') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/rider')); ?>"><i class="fa fa-users"></i><span>Manage Riders</span></a></li>
 			<?php endif; ?>
+			<?php if($corporate_user || @$user->can('view_policies')): ?>
+				<li class="<?php echo e((Route::current()->uri() == $first_segment.'/policies') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/policies')); ?>"><i class="fa fa-cog"></i><span>Manage Policies</span></a></li>
+			<?php endif; ?>
 
 			<?php if($corporate_user): ?>
 				<li class="<?php echo e((Route::current()->uri() == $first_segment.'/group') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/group')); ?>"><i class="fa fa-users"></i><span>Manage Groups</span></a></li>

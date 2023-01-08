@@ -1,0 +1,1 @@
+<h1>test</h1><?php /**PATH C:\xamp\htdocs\pool\taxiApp\resources\views/admin/policy/view.blade.php ENDPATH**/ ?>
