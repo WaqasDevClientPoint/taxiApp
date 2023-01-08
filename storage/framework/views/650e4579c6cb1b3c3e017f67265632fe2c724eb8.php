@@ -10,15 +10,20 @@
 					if(LOGIN_USER_TYPE=='company'){
 						$user = Auth::guard('company')->user();
 						$company_user = true;
+						$corporate_user = false;
+
 						$first_segment = 'company';
 					}elseif(LOGIN_USER_TYPE=='corporate'){
 						$user = Auth::guard('corporate')->user();
-						$company_user = true;
+						$company_user = false;
+						$corporate_user = true;
 						$first_segment = 'corporate';
 					}
 					else{
 						$user = Auth::guard('admin')->user();
 						$company_user = false;
+						$corporate_user = false;
+
 						$first_segment = 'admin';
 					}
 				?>
@@ -58,8 +63,12 @@
 			<?php if($company_user || @$user->can('view_driver')): ?>
 			<li class="<?php echo e((Route::current()->uri() == $first_segment.'/driver') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/driver')); ?>"><i class="fa fa-dribbble"></i><span>Manage Drivers</span></a></li>
 			<?php endif; ?>
-			<?php if(@$user->can('view_rider')): ?>
-			<li class="<?php echo e((Route::current()->uri() == 'admin/rider') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/rider')); ?>"><i class="fa fa-users"></i><span>Manage Riders</span></a></li>
+			<?php if($corporate_user || @$user->can('view_rider')): ?>
+			<li class="<?php echo e((Route::current()->uri() == $first_segment.'/rider') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/rider')); ?>"><i class="fa fa-users"></i><span>Manage Riders</span></a></li>
+			<?php endif; ?>
+
+			<?php if($corporate_user): ?>
+				<li class="<?php echo e((Route::current()->uri() == $first_segment.'/group') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/group')); ?>"><i class="fa fa-users"></i><span>Manage Groups</span></a></li>
 			<?php endif; ?>
 
 			<?php if(@$user->can('view_documents')): ?>
@@ -94,7 +103,7 @@
 			</li>
 			<?php endif; ?>
 
-			<?php if((($company_user && @$user->status == 'Active') || @$user->can('manage_manual_booking')) || ($company_user || @$user->can('manage_manual_booking'))): ?>
+			<?php if((($company_user  && @$user->status == 'Active') || @$user->can('manage_manual_booking')) || ($company_user || @$user->can('manage_manual_booking'))): ?>
 			<li class="treeview <?php echo e((Route::current()->uri() == $first_segment.'/manual_booking/{id?}' || Route::current()->uri() == $first_segment.'/later_booking') ? 'active' : ''); ?>">
 				<a href="#">
 					<i class="fa fa-taxi"></i>

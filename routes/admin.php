@@ -422,6 +422,12 @@ Route::group(['prefix' => (LOGIN_USER_TYPE=='corporate')?'corporate':'admin', 'm
     Route::match(array('GET', 'POST'), 'edit_rider/{id}', 'RiderController@update')->middleware('admin_can:update_rider');
     Route::match(array('GET', 'POST'), 'delete_rider/{id}', 'RiderController@delete')->middleware('admin_can:delete_rider');
 
+    //Manage Corporate
+    Route::get('group', 'GroupController@index')->middleware('admin_can:view_group');
+    Route::match(array('GET', 'POST'), 'add_group', 'GroupController@add')->middleware('admin_can:create_group');
+    Route::match(array('GET', 'POST'), 'edit_group/{id}', 'GroupController@update')->middleware('admin_can:update_group');
+    Route::match(array('GET', 'POST'), 'delete_group/{id}', 'GroupController@delete')->middleware('admin_can:delete_group');
+
     // Manage Driver
     Route::get('driver', 'DriverController@index')->middleware('admin_can:view_driver');
     Route::match(array('GET', 'POST'), 'add_driver', 'DriverController@add')->middleware('admin_can:create_driver');
