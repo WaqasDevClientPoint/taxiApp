@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2023 at 08:19 PM
+-- Generation Time: Jan 08, 2023 at 08:29 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -246,7 +246,8 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `name`, `profile`, `email`, `country_code`, `mobile_number`, `vat_number`, `password`, `remember_token`, `status`, `device_type`, `device_id`, `language`, `address`, `city`, `state`, `country`, `postal_code`, `company_commission`, `country_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Pool', '', 'company@poolus.com', '254', '0722000000', NULL, '$2y$10$hfMDQWzxTIfjdXzbcZH8se/5/nxMjJbULLcx0F1oENLzkzk0WStzK', NULL, 'Active', NULL, '', '', 'Moi Avenue', 'Nairobi', NULL, '254', '00200', '', 110, '2016-04-17 00:00:00', '2022-09-12 11:50:23', NULL);
+(1, 'Pool', '', 'company@poolus.com', '254', '0722000000', NULL, '$2y$10$RCJ0xMrvn5djtc4LoADWIutmtw/KEpBcIjqhOSghSXMoQka5IoZ/e', NULL, 'Active', NULL, '', '', 'Moi Avenue', 'Nairobi', NULL, '254', '00200', '', 110, '2016-04-17 00:00:00', '2022-09-12 11:50:23', NULL),
+(2, 'test corporate', '', 'testcorporate@gmail.com', '92', '3075004113', NULL, '$2y$10$RCJ0xMrvn5djtc4LoADWIutmtw/KEpBcIjqhOSghSXMoQka5IoZ/e', NULL, 'Pending', NULL, '', '', NULL, NULL, NULL, '', NULL, '0', NULL, '2023-01-07 04:46:55', '2023-01-07 04:46:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -320,23 +321,44 @@ CREATE TABLE `company_payout_preference` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `corporate`
+-- Table structure for table `corporates`
 --
 
-CREATE TABLE `corporate` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `corporates` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country_code` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobile_number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vat_number` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('Pending','Active','Inactive') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
+  `device_type` enum('1','2') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `device_id` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `language` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postal_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country_id` int(10) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `corporate`
+-- Dumping data for table `corporates`
 --
 
-INSERT INTO `corporate` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, '324234', '2022-12-29 06:07:48', '2022-12-29 06:07:48'),
-(2, 'Seven Kocepy', '2022-12-29 06:12:13', '2022-12-29 06:12:13');
+INSERT INTO `corporates` (`id`, `name`, `profile`, `email`, `country_code`, `mobile_number`, `vat_number`, `password`, `remember_token`, `status`, `device_type`, `device_id`, `language`, `address`, `city`, `state`, `country`, `postal_code`, `country_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'test corporate', '', 'waqasayubawan123@gmail.com', '92', '03075004113', NULL, '12345678', NULL, 'Pending', NULL, '', '', NULL, NULL, NULL, '', NULL, NULL, '2023-01-07 04:50:22', '2023-01-07 04:50:22', NULL),
+(2, 'test corporate', '', 'testcorporate@gmail.com', '93', '03075004113', NULL, '12345678', NULL, 'Pending', NULL, '', '', NULL, NULL, NULL, '', NULL, NULL, '2023-01-07 04:50:46', '2023-01-07 04:50:46', NULL),
+(3, 'test corporate', '', 'testcorporate123@gmail.com', '93', '03075004123', NULL, '12345678', NULL, 'Pending', NULL, '', '', NULL, NULL, NULL, '', NULL, NULL, '2023-01-07 04:56:46', '2023-01-07 04:56:46', NULL),
+(4, 'test corporate', '', 'testcorporate4123@gmail.com', '93', '030750044123', NULL, '$2y$10$mTYLEMZ/IaunDtZcQlRQfe4obTsKgYMTljotyQnUbzW8M1VRigLsm', NULL, 'Pending', NULL, '', '', NULL, NULL, NULL, '', NULL, NULL, '2023-01-07 05:02:21', '2023-01-07 05:02:21', NULL),
+(5, 'test', '', 'waqasayubawan12233@gmail.com', '92', '2342323', NULL, '$2y$10$0y7mZX/YqESXsOigWEmBauPpI7SiLdaqRaSQsNaTuUxUQBmupAYDS', NULL, 'Pending', NULL, '', '', NULL, NULL, NULL, '', NULL, NULL, '2023-01-07 05:04:58', '2023-01-07 05:04:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -1525,7 +1547,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (73, '2021_05_17_082442_create_cancel_reason_translations_table', 1),
 (74, '2021_05_19_044410_create_pages_translations', 1),
 (75, '2022_11_18_104043_create_ringtones_table', 2),
-(76, '2022_12_29_100846_create_corporate_table', 3);
+(76, '2022_12_29_100846_create_corporate_table', 3),
+(77, '2023_01_07_092615_create_corporates_table', 4);
 
 -- --------------------------------------------------------
 
@@ -2468,7 +2491,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('KqvixSGT13lcCR1MjlUwwcVMQdMRp1EzLJYjlfyK', 10083, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36', 'YTo4OntzOjg6ImN1cnJlbmN5IjtzOjM6IkVUQiI7czo2OiJzeW1ib2wiO3M6MzoiRVRCIjtzOjg6Imxhbmd1YWdlIjtzOjI6ImVuIjtzOjY6Il90b2tlbiI7czo0MDoiNkYzdU85N3V0Q1Z0ZWQ0S1UxODdCZ09XN1UyajJLVGM1R2V2WWJuaSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yaWRlcyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTA6ImxvZ2luX3R5cGUiO3M6MTM6Im1vYmlsZV9udW1iZXIiO3M6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjEwMDgzO30=', 1672945814);
+('Ompdkg1kCPCPquy7hl9JeXhOjgfprcpb4LtO1ILL', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36', 'YTo4OntzOjg6ImN1cnJlbmN5IjtzOjM6IkVUQiI7czo2OiJzeW1ib2wiO3M6MzoiRVRCIjtzOjg6Imxhbmd1YWdlIjtzOjI6ImVuIjtzOjY6Il90b2tlbiI7czo0MDoiSmFIcUNVcFFsaWc1RW9YQkhyZDFRaVdEMEJoR090SnoyRkVGRFJCQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jb21wYW55L2RyaXZlciI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTA6ImxvZ2luX3R5cGUiO3M6MTM6Im1vYmlsZV9udW1iZXIiO3M6NTQ6ImxvZ2luX2NvbXBhbnlfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1673079467),
+('RrhjkwmCa5rF1ODYKnxJxvm1EK4SkyXILYhryCGk', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36', 'YTo2OntzOjg6ImN1cnJlbmN5IjtzOjM6IkVUQiI7czo2OiJzeW1ib2wiO3M6MzoiRVRCIjtzOjg6Imxhbmd1YWdlIjtzOjI6ImVuIjtzOjY6Il90b2tlbiI7czo0MDoiWVh2WlE4emd6NnJvdFNRTHRqeDI5aU9NNGZjUElyTFliTk41OW01diI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1673162525),
+('SJhtf0eQcxWUkT23YNwrUXAfuGItwSRVwTHDt8ba', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36', 'YTo4OntzOjg6ImN1cnJlbmN5IjtzOjM6IkVUQiI7czo2OiJzeW1ib2wiO3M6MzoiRVRCIjtzOjg6Imxhbmd1YWdlIjtzOjI6ImVuIjtzOjY6Il90b2tlbiI7czo0MDoiRWdLNHZtdlQyUnBhUVNEYk9NSGJYSEVFZVFtN3Y2SmpFc1Q5OFlESyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jb3Jwb3JhdGUvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1NjoibG9naW5fY29ycG9yYXRlXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTtzOjEwOiJsb2dpbl90eXBlIjtzOjEzOiJtb2JpbGVfbnVtYmVyIjt9', 1673083471);
 
 -- --------------------------------------------------------
 
@@ -3059,10 +3084,12 @@ ALTER TABLE `company_payout_preference`
   ADD KEY `company_payout_preference_company_id_foreign` (`company_id`);
 
 --
--- Indexes for table `corporate`
+-- Indexes for table `corporates`
 --
-ALTER TABLE `corporate`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `corporates`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `corporates_country_id_foreign` (`country_id`),
+  ADD KEY `corporates_status_index` (`status`);
 
 --
 -- Indexes for table `country`
@@ -3617,7 +3644,7 @@ ALTER TABLE `car_type`
 -- AUTO_INCREMENT for table `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `company_documents`
@@ -3638,10 +3665,10 @@ ALTER TABLE `company_payout_preference`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `corporate`
+-- AUTO_INCREMENT for table `corporates`
 --
-ALTER TABLE `corporate`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `corporates`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `country`
@@ -3821,7 +3848,7 @@ ALTER TABLE `metas`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `pages`
@@ -4057,6 +4084,12 @@ ALTER TABLE `company_payout_credentials`
 --
 ALTER TABLE `company_payout_preference`
   ADD CONSTRAINT `company_payout_preference_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`);
+
+--
+-- Constraints for table `corporates`
+--
+ALTER TABLE `corporates`
+  ADD CONSTRAINT `corporates_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `documents_langs`
