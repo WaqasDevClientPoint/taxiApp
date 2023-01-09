@@ -33,7 +33,7 @@ class EntrustPermission
 
         // Roles can visible to company
         $this->company_role = array('manage_manual_booking','manage_trips','view_driver','create_driver','update_driver','delete_driver','update_company','manage_statements','manage_cancel_trips','manage_owe_amount','manage_send_message','manage_driver_payments','manage_map','manage_heat_map','manage_payments','manage_rating','manage_requests','manage_vehicle');
-        $this->corporate_role = array('view_rider','create_rider','update_rider','delete_rider','view_group','create_group','update_group','delete_group','view_policies');
+        $this->corporate_role = array('view_rider','create_rider','update_rider','delete_rider','view_group','create_group','update_group','delete_group','view_policies','create_policies');
 
     }
 
