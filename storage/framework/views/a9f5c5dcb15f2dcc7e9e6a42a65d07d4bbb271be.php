@@ -100,9 +100,9 @@
 
 </style>
 <h1>test</h1>
-@extends('admin.template')
 
-@section('main')
+
+<?php $__env->startSection('main'); ?>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -112,7 +112,7 @@
                 <small>Control panel</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="{{ url(LOGIN_USER_TYPE . '/dashboard') }}"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="<?php echo e(url(LOGIN_USER_TYPE . '/dashboard')); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Policies</li>
             </ol>
         </section>
@@ -125,19 +125,19 @@
                     <div class="box">
                         <div class="box-header">
                             <!-- <h3 class="box-title">Manage Riders</h3> -->
-                            @if ((LOGIN_USER_TYPE == 'corporate' && Auth::guard('corporate')->user()->status == 'Active') ||
+                            <?php if((LOGIN_USER_TYPE == 'corporate' && Auth::guard('corporate')->user()->status == 'Active') ||
                                 (LOGIN_USER_TYPE == 'admin' &&
-                                    Auth::guard('admin')->user()->can('create_rider')))
+                                    Auth::guard('admin')->user()->can('create_rider'))): ?>
                                 <div style="float:right;"><a class="btn btn-success" type="button" class="btn btn-primary"
                                      href="">Add Policy</a>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            {{-- {!! $dataTable->table() !!} --}}
+                            
                             <div>
-                                <h3>New Policy</h3>
+                                <h4>New Policy</h4>
                                 <p>Set up spending allowance, add limitations, time restrictions and expense codes for your
                                     team.</p>
                             </div>
@@ -151,10 +151,11 @@
                                         <label for="description">Description of policy <span>Optional</span> </label>
                                         <textarea class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
                                     </div>
-                                    <p class="text-center mb-0"><strong> RULES  </strong></p>
-                                    <hr>
+                                    <p class="text-center mb-0"><strong> RULES
+                                            <hr>
+                                        </strong></p>
 
-                                    {{-- Expense tracking --}}
+                                    
                                     <div class="card expense">
                                         <div class="card-body">
                                             <label class="card-title">Expense tracking</label>
@@ -196,10 +197,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- **Expense tracking end**--}}
+                                    
 
                                     <br>
-                                    {{-- Spending allowance --}}
+                                    
                                     <div class="card speeding">
                                         <div class="card-body">
                                             <label class="card-title">Spending allowance</label>
@@ -238,10 +239,10 @@
                                         </div>
 
                                     </div>
-                                    {{-- **Spending allowance end** --}}
+                                    
 
                                     <br>
-                                    {{-- Number of rides --}}
+                                    
                                     <div class="card speeding">
                                         <div class="card-body">
                                             <label class="card-title">Number of rides</label>
@@ -279,10 +280,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- **Number of rides end**--}}
+                                    
 
                                     <br>
-                                    {{-- Ride day and time --}}
+                                    
                                     <div class="card ride-time">
                                         <div class="card-body">
                                             <label class="card-title">Ride day and time</label>
@@ -309,7 +310,7 @@
                                                     <div class="alert">
                                                        <i class="fa fa-info"></i> <span>Hour restriction for a single day can’t extend beyond 23:59. To add hour restriction that go beyond 24:00, select the next day and enter the appropriate times.</span> 
                                                     </div>
-                                                    {{-- Monday --}}
+                                                    
                                                     <div>
                                                         <label>Monday</label>
                                                         <label class="switch" style="float: right;">
@@ -339,7 +340,7 @@
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    {{-- Tuesday --}}
+                                                    
                                                     <div>
                                                         <label>Tuesday</label>
                                                         <label class="switch" style="float: right;">
@@ -370,7 +371,7 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- Wednesday --}}
+                                                    
                                                     <div>
                                                         <label>Wednesday</label>
                                                         <label class="switch" style="float: right;">
@@ -401,7 +402,7 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- Thursday --}}
+                                                    
                                                     <div>
                                                         <label>Thursday</label>
                                                         <label class="switch" style="float: right;">
@@ -432,7 +433,7 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- Friday --}}
+                                                    
                                                     <div>
                                                         <label>Friday</label>
                                                         <label class="switch" style="float: right;">
@@ -463,7 +464,7 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- Saturday --}}
+                                                    
                                                     <div>
                                                         <label>Saturday</label>
                                                         <label class="switch" style="float: right;">
@@ -494,7 +495,7 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- Sunday --}}
+                                                    
                                                     <div>
                                                         <label>Sunday</label>
                                                         <label class="switch" style="float: right;">
@@ -529,10 +530,10 @@
                                         </div>
                                     </div>
                                     </div>
-                                    {{-- **Ride day and time end**--}}
+                                    
 
                                     <br>
-                                    {{-- Service type --}}
+                                    
                                     <div class="card service-type">
                                         <div class="card-body">
                                             <label class="card-title">Service type</label>
@@ -580,10 +581,10 @@
                                         </div>
 
                                     </div>
-                                    {{-- **Service type end** --}}
+                                    
 
                                     <br>
-                                    {{-- Ride locations --}}
+                                    
                                     <div class="card service-type">
                                         <div class="card-body">
                                             <label class="card-title">Ride locations</label>
@@ -595,7 +596,7 @@
 
                                             <div class="service-type-body">
 
-                                                {{-- To or from certain locations --}}
+                                                
                                                 <div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio" name="location" id="location" value="location-to-from" >
@@ -607,7 +608,7 @@
 
                                                 </div>
 
-                                                {{-- Only from certain locations --}}
+                                                
                                                 <div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio" name="location" id="location" value="location-only-from" >
@@ -619,7 +620,7 @@
 
                                                 </div>
 
-                                                {{-- Only to certain locations --}}
+                                                
                                                 <div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio" name="location" id="location" value="location-only-to" >
@@ -631,7 +632,7 @@
 
                                                 </div>
 
-                                                {{-- Between certain locations --}}
+                                                
                                                 <div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio" name="location" id="location" value="location-between" >
@@ -648,7 +649,7 @@
                                         </div>
 
                                     </div>
-                                    {{-- **Ride locations end** --}}
+                                    
 
                                 </form>
                             </div>
@@ -713,10 +714,12 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <link rel="stylesheet" href="{{ url('css/buttons.dataTables.css') }}">
-    <script src="{{ url('js/dataTables.buttons.js') }}"></script>
-    <script src="{{ url('js/buttons.server-side.js') }}"></script>
-    {{-- {!! $dataTable->scripts() !!} --}}
-@endpush
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <link rel="stylesheet" href="<?php echo e(url('css/buttons.dataTables.css')); ?>">
+    <script src="<?php echo e(url('js/dataTables.buttons.js')); ?>"></script>
+    <script src="<?php echo e(url('js/buttons.server-side.js')); ?>"></script>
+    
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\taxiApp\resources\views/admin/policy/view.blade.php ENDPATH**/ ?>
