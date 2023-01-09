@@ -163,7 +163,7 @@
 			<li class="{{ (Route::current()->uri() == 'admin/manage_fare') ? 'active' : ''  }}"><a href="{{ url('admin/manage_fare') }}"><i class="fa fa fa-dollar"></i><span>Manage Fare</span></a></li>
 			@endif
 
-			@if($company_user || @$user->can('manage_requests') || @$user->can('manage_trips') || @$user->can('manage_cancel_trips') || @$user->can('manage_payments') || @$user->can('manage_rating'))
+			@if($company_user || $corporate_user || @$user->can('manage_requests') || @$user->can('manage_trips') || @$user->can('manage_cancel_trips') || @$user->can('manage_payments') || @$user->can('manage_rating'))
 			<li class="treeview {{ (Route::current()->uri() == $first_segment.'/request' || Route::current()->uri() == $first_segment.'/trips' || Route::current()->uri() == $first_segment.'/cancel_trips' || Route::current()->uri() == $first_segment.'/payments' || Route::current()->uri() == $first_segment.'/rating') ? 'active' : ''  }}">
 				<a href="#">
 					<i class="fa fa-taxi"></i>
@@ -193,7 +193,7 @@
 			</li>
 			@endif
 
-			@if($company_user || @$user->can('manage_driver_payments') || @$user->can('manage_company_payments'))
+			@if($company_user || $corporate_user || @$user->can('manage_driver_payments') || @$user->can('manage_company_payments'))
 			<li class="treeview {{ (Route::current()->uri() == 'admin/payout/overall' || Route::current()->uri() == 'admin/payout/company/overall' || Route::current()->uri() == 'company/payout/overall') ? 'active' : ''  }}">
 				<a href="#">
 					<i class="fa fa-dollar" aria-hidden="true"></i> <span>Manage Payouts</span> <i class="fa fa-angle-left pull-right"></i>
@@ -267,7 +267,7 @@
 				</ul>
 			</li>
 			@endif
-			@if($company_user || $user->can('manage_map') || $user->can('manage_heat_map'))
+			@if($company_user || $corporate_user || $user->can('manage_map') || $user->can('manage_heat_map'))
 			<li class="treeview {{ (Route::current()->uri() == $first_segment.'/map' || Route::current()->uri() == $first_segment.'/heat-map') ? 'active' : ''  }}">
 				
 				<a href="#">
