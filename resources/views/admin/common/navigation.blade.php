@@ -170,23 +170,23 @@
 					<span> Manage Trips </span><i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					@if($company_user || @$user->can('manage_requests'))
+					@if($company_user || $corporate_user|| @$user->can('manage_requests'))
 					<li class="{{ (Route::current()->uri() == $first_segment.'/request') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/request') }}"><i class="fa fa-paper-plane-o"></i><span>Manage Ride Requests</span></a></li>
 					@endif
 
-					@if($company_user || @$user->can('manage_trips'))
+					@if($company_user || $corporate_user|| @$user->can('manage_trips'))
 					<li class="{{ (Route::current()->uri() == $first_segment.'/trips') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/trips') }}"><i class="fa fa-taxi"></i><span> Manage Trips</span></a></li>
 					@endif
 
-					@if($company_user || @$user->can('manage_cancel_trips'))
+					@if($company_user || $corporate_user|| @$user->can('manage_cancel_trips'))
 					<li class="{{ (Route::current()->uri() == $first_segment.'/cancel_trips') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/cancel_trips') }}"><i class="fa fa-chain-broken"></i><span>Manage Canceled Trips</span></a></li>
 					@endif
 					
-					@if($company_user || @$user->can('manage_payments'))
+					@if($company_user || $corporate_user|| @$user->can('manage_payments'))
 					<li class="{{ (Route::current()->uri() == $first_segment.'/payments') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/payments') }}"><i class="fa fa-usd"></i><span>Manage Payments</span></a></li>
 					@endif
 					
-					@if($company_user || @$user->can('manage_rating'))
+					@if($company_user || $corporate_user|| @$user->can('manage_rating'))
 					<li class="{{ (Route::current()->uri() == $first_segment.'/rating') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/rating') }}"><i class="fa fa-star"></i><span>Ratings</span></a></li>
 					@endif
 				</ul>
@@ -274,11 +274,11 @@
 					<i class="fa fa-map-marker" aria-hidden="true"></i> <span>Manage Map</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					@if($user->can('manage_map') || $company_user )
+					@if($user->can('manage_map')|| $corporate_user || $company_user )
 						<li class="{{ (Route::current()->uri() == $first_segment.'/map') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/map') }}"><i class="fa fa-circle-o"></i><span>Map View</span></a></li>
 					@endif
 
-					@if($user->can('manage_heat_map') || $company_user )
+					@if($user->can('manage_heat_map')|| $corporate_user || $company_user )
 					<li class="{{ (Route::current()->uri() == $first_segment.'/heat-map') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/heat-map') }}"><i class="fa fa-circle-o"></i><span>HeatMap</span></a></li>
 					@endif
 				</ul>

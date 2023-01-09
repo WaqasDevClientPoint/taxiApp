@@ -163,37 +163,37 @@
 			<li class="<?php echo e((Route::current()->uri() == 'admin/manage_fare') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/manage_fare')); ?>"><i class="fa fa fa-dollar"></i><span>Manage Fare</span></a></li>
 			<?php endif; ?>
 
-			<?php if($company_user || @$user->can('manage_requests') || @$user->can('manage_trips') || @$user->can('manage_cancel_trips') || @$user->can('manage_payments') || @$user->can('manage_rating')): ?>
+			<?php if($company_user || $corporate_user || @$user->can('manage_requests') || @$user->can('manage_trips') || @$user->can('manage_cancel_trips') || @$user->can('manage_payments') || @$user->can('manage_rating')): ?>
 			<li class="treeview <?php echo e((Route::current()->uri() == $first_segment.'/request' || Route::current()->uri() == $first_segment.'/trips' || Route::current()->uri() == $first_segment.'/cancel_trips' || Route::current()->uri() == $first_segment.'/payments' || Route::current()->uri() == $first_segment.'/rating') ? 'active' : ''); ?>">
 				<a href="#">
 					<i class="fa fa-taxi"></i>
 					<span> Manage Trips </span><i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<?php if($company_user || @$user->can('manage_requests')): ?>
+					<?php if($company_user || $corporate_user|| @$user->can('manage_requests')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/request') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/request')); ?>"><i class="fa fa-paper-plane-o"></i><span>Manage Ride Requests</span></a></li>
 					<?php endif; ?>
 
-					<?php if($company_user || @$user->can('manage_trips')): ?>
+					<?php if($company_user || $corporate_user|| @$user->can('manage_trips')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/trips') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/trips')); ?>"><i class="fa fa-taxi"></i><span> Manage Trips</span></a></li>
 					<?php endif; ?>
 
-					<?php if($company_user || @$user->can('manage_cancel_trips')): ?>
+					<?php if($company_user || $corporate_user|| @$user->can('manage_cancel_trips')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/cancel_trips') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/cancel_trips')); ?>"><i class="fa fa-chain-broken"></i><span>Manage Canceled Trips</span></a></li>
 					<?php endif; ?>
 					
-					<?php if($company_user || @$user->can('manage_payments')): ?>
+					<?php if($company_user || $corporate_user|| @$user->can('manage_payments')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/payments') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/payments')); ?>"><i class="fa fa-usd"></i><span>Manage Payments</span></a></li>
 					<?php endif; ?>
 					
-					<?php if($company_user || @$user->can('manage_rating')): ?>
+					<?php if($company_user || $corporate_user|| @$user->can('manage_rating')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/rating') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/rating')); ?>"><i class="fa fa-star"></i><span>Ratings</span></a></li>
 					<?php endif; ?>
 				</ul>
 			</li>
 			<?php endif; ?>
 
-			<?php if($company_user || @$user->can('manage_driver_payments') || @$user->can('manage_company_payments')): ?>
+			<?php if($company_user || $corporate_user || @$user->can('manage_driver_payments') || @$user->can('manage_company_payments')): ?>
 			<li class="treeview <?php echo e((Route::current()->uri() == 'admin/payout/overall' || Route::current()->uri() == 'admin/payout/company/overall' || Route::current()->uri() == 'company/payout/overall') ? 'active' : ''); ?>">
 				<a href="#">
 					<i class="fa fa-dollar" aria-hidden="true"></i> <span>Manage Payouts</span> <i class="fa fa-angle-left pull-right"></i>
@@ -267,18 +267,18 @@
 				</ul>
 			</li>
 			<?php endif; ?>
-			<?php if($company_user || $user->can('manage_map') || $user->can('manage_heat_map')): ?>
+			<?php if($company_user || $corporate_user || $user->can('manage_map') || $user->can('manage_heat_map')): ?>
 			<li class="treeview <?php echo e((Route::current()->uri() == $first_segment.'/map' || Route::current()->uri() == $first_segment.'/heat-map') ? 'active' : ''); ?>">
 				
 				<a href="#">
 					<i class="fa fa-map-marker" aria-hidden="true"></i> <span>Manage Map</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
 				<ul class="treeview-menu">
-					<?php if($user->can('manage_map') || $company_user ): ?>
+					<?php if($user->can('manage_map')|| $corporate_user || $company_user ): ?>
 						<li class="<?php echo e((Route::current()->uri() == $first_segment.'/map') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/map')); ?>"><i class="fa fa-circle-o"></i><span>Map View</span></a></li>
 					<?php endif; ?>
 
-					<?php if($user->can('manage_heat_map') || $company_user ): ?>
+					<?php if($user->can('manage_heat_map')|| $corporate_user || $company_user ): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/heat-map') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/heat-map')); ?>"><i class="fa fa-circle-o"></i><span>HeatMap</span></a></li>
 					<?php endif; ?>
 				</ul>
