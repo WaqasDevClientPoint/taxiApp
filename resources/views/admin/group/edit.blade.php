@@ -38,8 +38,9 @@
                                 <div class="col-md-7 col-sm-offset-1">
                                     <select class ='form-control' id = 'policy' name='policy' >
                                         <option value="">Select Policy</option>
-                                        <option value="1" selected>Managers</option>
-                                        <option value="2">Workers</option>
+                                        @foreach($policies as $policy)
+                                            <option value="{{$policy->id}}" {{$policy->id==$result->policy_id?'selected':''}}>{{$policy->policy_name}}</option>
+                                        @endforeach
 
                                     </select>
                                     <span class="text-danger">{{ $errors->first('policy') }}</span>

@@ -44,10 +44,10 @@
                                 <label for="input_first_name" class="col-sm-3 control-label">Policy<em class="text-danger">*</em></label>
                                 <div class="col-md-7 col-sm-offset-1">
                                     <select class ='form-control' id = 'policy' name='policy' >
-                                        <option value="">Select Policy</option>
-                                        <option value="1">Managers</option>
-                                        <option value="2">Workers</option>
-
+                                        <option value="">Select Policy
+                                        <?php $__currentLoopData = $policies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $policy): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($policy->id); ?>"><?php echo e($policy->policy_name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                     <span class="text-danger"><?php echo e($errors->first('policy')); ?></span>
                                 </div>

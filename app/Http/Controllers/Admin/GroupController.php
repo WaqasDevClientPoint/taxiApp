@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ApiCredentials;
 use App\Models\Country;
 use App\Models\Group;
+use App\Models\Policies;
 use Illuminate\Http\Request;
 use App\DataTables\UsersDataTable;
 use Illuminate\Support\Facades\Validator;
@@ -35,6 +36,8 @@ class GroupController extends Controller
         if($request->isMethod('GET')) {
             $data['country_code_option'] = Country::select('long_name','phone_code','id')->get();
             $data['google_api'] = ApiCredentials::where('id','');
+            $data['policies'] = Policies::where('corporate_id',Auth('corporate')->id())->get();
+
             return view('admin.group.add',$data);
         }
         if($request->submit) {
@@ -121,6 +124,8 @@ class GroupController extends Controller
     {
         if($request->isMethod("GET")) {
             $data['result'] = Group::find($request->id);
+            $data['policies'] = Policies::where('corporate_id',Auth('corporate')->id())->get();
+
             if($data['result']) {
                 return view('admin.group.edit', $data);
             }

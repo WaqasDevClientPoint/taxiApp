@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2023 at 10:29 PM
+-- Generation Time: Jan 09, 2023 at 02:39 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -1202,7 +1202,8 @@ CREATE TABLE `groups` (
 INSERT INTO `groups` (`id`, `name`, `description`, `policy_id`, `created_at`, `updated_at`, `deleted_at`, `corporate_id`) VALUES
 (1, 'Managers Group', 'Group for managers', 1, '2023-01-08 11:10:25', '2023-01-08 11:10:25', NULL, NULL),
 (2, 'Employee Group', 'Employee Group', 2, '2023-01-08 11:47:18', '2023-01-08 11:47:18', NULL, NULL),
-(4, 'Managers Group 123', 'Managers Group', 1, '2023-01-08 13:20:18', '2023-01-08 13:45:51', NULL, 5);
+(4, 'Managers Group 123', 'Managers Group', 1, '2023-01-08 13:20:18', '2023-01-08 13:45:51', NULL, 5),
+(5, 'sds', 'dasdsad', 1, '2023-01-09 11:39:26', '2023-01-09 11:39:26', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -1576,7 +1577,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (76, '2022_12_29_100846_create_corporate_table', 3),
 (77, '2023_01_07_092615_create_corporates_table', 4),
 (78, '2023_01_08_162140_add_corporate_id_to_groups_table', 5),
-(79, '2023_01_08_191014_add_group_id_to_users_table', 6);
+(79, '2023_01_08_191014_add_group_id_to_users_table', 6),
+(80, '2023_01_09_125035_create_policies_table', 7),
+(81, '2023_01_09_132714_add_corporate_id_policies_table', 8);
 
 -- --------------------------------------------------------
 
@@ -2057,6 +2060,34 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `policies`
+--
+
+CREATE TABLE `policies` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `policy_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `policy_description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount_to_spend` int(10) UNSIGNED NOT NULL,
+  `no_of_rides` int(10) UNSIGNED NOT NULL,
+  `morning` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `afternoon` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `evening` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `corporate_id` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `policies`
+--
+
+INSERT INTO `policies` (`id`, `policy_name`, `policy_description`, `amount_to_spend`, `no_of_rides`, `morning`, `afternoon`, `evening`, `created_at`, `updated_at`, `corporate_id`) VALUES
+(1, 'test policy', 'policy description', 0, 22, '06:00-06:00', '18:24-18:24', '18:25-18:25', '2023-01-09 11:24:22', '2023-01-09 11:24:22', 5),
+(2, 'test policy 2', 'wqeqw', 0, 32, '18:25-18:25', '18:27-18:27', '20:26-20:26', '2023-01-09 11:26:07', '2023-01-09 11:26:07', 5);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pool_trips`
 --
 
@@ -2523,7 +2554,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('CmLEem1OzryMgwwklbtDBd0YN1HUXKbb7RDthruz', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36', 'YTo4OntzOjg6ImN1cnJlbmN5IjtzOjM6IkVUQiI7czo2OiJzeW1ib2wiO3M6MzoiRVRCIjtzOjg6Imxhbmd1YWdlIjtzOjI6ImVuIjtzOjY6Il90b2tlbiI7czo0MDoiWVh2WlE4emd6NnJvdFNRTHRqeDI5aU9NNGZjUElyTFliTk41OW01diI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jb3Jwb3JhdGUvZ3JvdXAiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjEwOiJsb2dpbl90eXBlIjtzOjEzOiJtb2JpbGVfbnVtYmVyIjtzOjU2OiJsb2dpbl9jb3Jwb3JhdGVfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo1O30=', 1673202743);
+('x49gqEvVq5brnRwoWCpDQ9IAPcz5qXvrvFz0BRLL', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36', 'YTo4OntzOjg6ImN1cnJlbmN5IjtzOjM6IkVUQiI7czo2OiJzeW1ib2wiO3M6MzoiRVRCIjtzOjg6Imxhbmd1YWdlIjtzOjI6ImVuIjtzOjY6Il90b2tlbiI7czo0MDoiWTVuSEZlU2pOMklaZFRUS0dlUGNHREo5TEJrQnJvWUpzejR1MFZIZCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jb3Jwb3JhdGUvZWRpdF9ncm91cC81Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxMDoibG9naW5fdHlwZSI7czoxMzoibW9iaWxlX251bWJlciI7czo1NjoibG9naW5fY29ycG9yYXRlXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTt9', 1673271573);
 
 -- --------------------------------------------------------
 
@@ -3417,6 +3448,13 @@ ALTER TABLE `permission_role`
   ADD KEY `permission_role_role_id_foreign` (`role_id`);
 
 --
+-- Indexes for table `policies`
+--
+ALTER TABLE `policies`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `policies_corporate_id_foreign` (`corporate_id`);
+
+--
 -- Indexes for table `pool_trips`
 --
 ALTER TABLE `pool_trips`
@@ -3817,7 +3855,7 @@ ALTER TABLE `filter_options_translations`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `help`
@@ -3895,7 +3933,7 @@ ALTER TABLE `metas`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `pages`
@@ -3950,6 +3988,12 @@ ALTER TABLE `peak_fare_details`
 --
 ALTER TABLE `permissions`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+
+--
+-- AUTO_INCREMENT for table `policies`
+--
+ALTER TABLE `policies`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pool_trips`
@@ -4260,6 +4304,12 @@ ALTER TABLE `peak_fare_details`
 ALTER TABLE `permission_role`
   ADD CONSTRAINT `permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `policies`
+--
+ALTER TABLE `policies`
+  ADD CONSTRAINT `policies_corporate_id_foreign` FOREIGN KEY (`corporate_id`) REFERENCES `corporates` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `pool_trips`

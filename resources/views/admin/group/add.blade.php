@@ -41,10 +41,10 @@
                                 <label for="input_first_name" class="col-sm-3 control-label">Policy<em class="text-danger">*</em></label>
                                 <div class="col-md-7 col-sm-offset-1">
                                     <select class ='form-control' id = 'policy' name='policy' >
-                                        <option value="">Select Policy</option>
-                                        <option value="1">Managers</option>
-                                        <option value="2">Workers</option>
-
+                                        <option value="">Select Policy
+                                        @foreach($policies as $policy)
+                                        <option value="{{$policy->id}}">{{$policy->policy_name}}</option>
+                                        @endforeach
                                     </select>
                                     <span class="text-danger">{{ $errors->first('policy') }}</span>
                                 </div>
