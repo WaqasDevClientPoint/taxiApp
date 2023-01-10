@@ -123,10 +123,10 @@
 					<?php endif; ?>
 				</a>
 				<ul class="treeview-menu">
-					<?php if(($company_user && @$user->status == 'Active') || @$user->can('manage_manual_booking')): ?>
+					<?php if(($company_user || $corporate_user && @$user->status == 'Active') || @$user->can('manage_manual_booking')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/manual_booking/{id?}') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/manual_booking')); ?>"><i class="fa fa-address-book" aria-hidden="true"></i><span>Manual Booking</span></a></li>
 					<?php endif; ?>
-					<?php if($company_user || @$user->can('manage_manual_booking')): ?>
+					<?php if($company_user || $corporate_user || @$user->can('manage_manual_booking')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/later_booking') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/later_booking')); ?>"><i class="fa fa-list-alt"></i><span>View Manual/Schedule Booking</span></a></li>
 					<?php endif; ?>
 				</ul>

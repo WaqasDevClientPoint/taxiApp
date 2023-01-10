@@ -23,7 +23,7 @@
           <div class="box">
             <div class="box-header">
               <!-- <h3 class="box-title">Manage Riders</h3> -->
-              @if((LOGIN_USER_TYPE=='corporate' && Auth::guard('corporate')->user()->status == 'Active') || (LOGIN_USER_TYPE=='admin' && Auth::guard('admin')->user()->can('create_rider')))
+              @if((LOGIN_USER_TYPE=='corporate') || (LOGIN_USER_TYPE=='admin' && Auth::guard('admin')->user()->can('create_rider')))
                 <div style="float:right;"><a class="btn btn-success" href="{{ url(LOGIN_USER_TYPE.'/add_rider') }}">Add Rider</a></div>
               @endif
             </div>

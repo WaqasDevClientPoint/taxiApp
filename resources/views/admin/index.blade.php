@@ -21,7 +21,6 @@
   <section class="content">
     <!-- Small boxes (Stat box) -->
     <div class="row">
-      @if(LOGIN_USER_TYPE != 'corporate')
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
@@ -35,9 +34,8 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
-      @endif
 
-      @if(LOGIN_USER_TYPE == 'company' && LOGIN_USER_TYPE != 'corporate')
+      @if(LOGIN_USER_TYPE == 'company')
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/statements/overall') }}" class="small-box">
@@ -73,9 +71,7 @@
       @endif
 
       <!-- ./col -->
-        @if(LOGIN_USER_TYPE!='corporate')
-
-        <div class="col-lg-3 col-xs-6">
+      <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box">
           <div class="inner">
@@ -89,7 +85,6 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
-        @endif
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
@@ -110,8 +105,6 @@
     <!-- /.row -->
     <!-- Small boxes (Stat box) -->
     <div class="row">
-      @if(LOGIN_USER_TYPE!='corporate')
-
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
@@ -125,7 +118,6 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
-      @endif
       @if(LOGIN_USER_TYPE == 'company')
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
@@ -161,9 +153,7 @@
       </div>
       @endif
       <!-- ./col -->
-        @if(LOGIN_USER_TYPE!='corporate')
-
-        <div class="col-lg-3 col-xs-6">
+      <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box">
           <div class="inner">
@@ -177,7 +167,6 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
-        @endif
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
@@ -196,8 +185,6 @@
     </div>
     <!-- /.row -->
     <!-- Main row -->
-    @if(LOGIN_USER_TYPE!='corporate')
-
     <div class="row">
       <!-- Left col -->
       <section class="col-lg-7 connectedSortable">
@@ -245,7 +232,6 @@
       </section>
       <!-- right col -->
     </div>
-    @endif
     <!-- /.row (main row) -->
   </section>
   <!-- /.content -->
