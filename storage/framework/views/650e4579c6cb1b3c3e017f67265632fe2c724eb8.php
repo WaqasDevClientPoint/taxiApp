@@ -64,14 +64,19 @@
 			<li class="<?php echo e((Route::current()->uri() == $first_segment.'/driver') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/driver')); ?>"><i class="fa fa-dribbble"></i><span>Manage Drivers</span></a></li>
 			<?php endif; ?>
 			<?php if($corporate_user || @$user->can('view_rider')): ?>
-			<li class="<?php echo e((Route::current()->uri() == $first_segment.'/rider') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/rider')); ?>"><i class="fa fa-users"></i><span>Manage Riders</span></a></li>
+			<li class="<?php echo e((Route::current()->uri() == $first_segment.'/rider') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/rider')); ?>"><i class="fa fa-users"></i>
+					<?php if($corporate_user): ?>
+					<span>People</span></a></li>
+			<?php else: ?>
+				<span>Manage Riders</span></a></li>
+			<?php endif; ?>
 			<?php endif; ?>
 			<?php if($corporate_user || @$user->can('view_policies')): ?>
-				<li class="<?php echo e((Route::current()->uri() == $first_segment.'/policies') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/policies')); ?>"><i class="fa fa-cog"></i><span>Manage Policies</span></a></li>
+				<li class="<?php echo e((Route::current()->uri() == $first_segment.'/policies') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/policies')); ?>"><i class="fa fa-cog"></i><span>Policies</span></a></li>
 			<?php endif; ?>
 
 			<?php if($corporate_user): ?>
-				<li class="<?php echo e((Route::current()->uri() == $first_segment.'/group') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/group')); ?>"><i class="fa fa-users"></i><span>Manage Groups</span></a></li>
+				<li class="<?php echo e((Route::current()->uri() == $first_segment.'/group') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/group')); ?>"><i class="fa fa-users"></i><span>Groups</span></a></li>
 			<?php endif; ?>
 
 			<?php if(@$user->can('view_documents')): ?>
@@ -106,11 +111,16 @@
 			</li>
 			<?php endif; ?>
 
-			<?php if((($company_user  && @$user->status == 'Active') || @$user->can('manage_manual_booking')) || ($company_user || @$user->can('manage_manual_booking'))): ?>
+			<?php if((($company_user || $corporate_user  && @$user->status == 'Active') || @$user->can('manage_manual_booking')) || ($company_user || @$user->can('manage_manual_booking'))): ?>
 			<li class="treeview <?php echo e((Route::current()->uri() == $first_segment.'/manual_booking/{id?}' || Route::current()->uri() == $first_segment.'/later_booking') ? 'active' : ''); ?>">
 				<a href="#">
 					<i class="fa fa-taxi"></i>
-					<span> Manage Manual Booking </span><i class="fa fa-angle-left pull-right"></i>
+					<?php if($corporate_user): ?>
+					<span> Rider Booker </span><i class="fa fa-angle-left pull-right"></i>
+					<?php else: ?>
+						<span> Manage Manual Booking </span><i class="fa fa-angle-left pull-right"></i>
+
+					<?php endif; ?>
 				</a>
 				<ul class="treeview-menu">
 					<?php if(($company_user && @$user->status == 'Active') || @$user->can('manage_manual_booking')): ?>
@@ -167,7 +177,11 @@
 			<li class="treeview <?php echo e((Route::current()->uri() == $first_segment.'/request' || Route::current()->uri() == $first_segment.'/trips' || Route::current()->uri() == $first_segment.'/cancel_trips' || Route::current()->uri() == $first_segment.'/payments' || Route::current()->uri() == $first_segment.'/rating') ? 'active' : ''); ?>">
 				<a href="#">
 					<i class="fa fa-taxi"></i>
-					<span> Manage Trips </span><i class="fa fa-angle-left pull-right"></i>
+					<?php if($corporate_user): ?>
+					<span> Rides </span><i class="fa fa-angle-left pull-right"></i>
+					<?php else: ?>
+						<span> Manage Trips </span><i class="fa fa-angle-left pull-right"></i>
+					<?php endif; ?>
 				</a>
 				<ul class="treeview-menu">
 					<?php if($company_user || $corporate_user|| @$user->can('manage_requests')): ?>
@@ -181,11 +195,11 @@
 					<?php if($company_user || $corporate_user|| @$user->can('manage_cancel_trips')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/cancel_trips') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/cancel_trips')); ?>"><i class="fa fa-chain-broken"></i><span>Manage Canceled Trips</span></a></li>
 					<?php endif; ?>
-					
-					<?php if($company_user || $corporate_user|| @$user->can('manage_payments')): ?>
+
+					<?php if($company_user || @$user->can('manage_payments')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/payments') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/payments')); ?>"><i class="fa fa-usd"></i><span>Manage Payments</span></a></li>
 					<?php endif; ?>
-					
+
 					<?php if($company_user || $corporate_user|| @$user->can('manage_rating')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/rating') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/rating')); ?>"><i class="fa fa-star"></i><span>Ratings</span></a></li>
 					<?php endif; ?>
@@ -193,7 +207,7 @@
 			</li>
 			<?php endif; ?>
 
-			<?php if($company_user || $corporate_user || @$user->can('manage_driver_payments') || @$user->can('manage_company_payments')): ?>
+			<?php if($company_user  || @$user->can('manage_driver_payments') || @$user->can('manage_company_payments')): ?>
 			<li class="treeview <?php echo e((Route::current()->uri() == 'admin/payout/overall' || Route::current()->uri() == 'admin/payout/company/overall' || Route::current()->uri() == 'company/payout/overall') ? 'active' : ''); ?>">
 				<a href="#">
 					<i class="fa fa-dollar" aria-hidden="true"></i> <span>Manage Payouts</span> <i class="fa fa-angle-left pull-right"></i>
@@ -267,7 +281,7 @@
 				</ul>
 			</li>
 			<?php endif; ?>
-			<?php if($company_user || $corporate_user || $user->can('manage_map') || $user->can('manage_heat_map')): ?>
+			<?php if($company_user  || $user->can('manage_map') || $user->can('manage_heat_map')): ?>
 			<li class="treeview <?php echo e((Route::current()->uri() == $first_segment.'/map' || Route::current()->uri() == $first_segment.'/heat-map') ? 'active' : ''); ?>">
 				
 				<a href="#">
@@ -331,11 +345,27 @@
 			<?php if(@$user->can('manage_join_us')): ?>
 			<li class="<?php echo e((Route::current()->uri() == 'admin/join_us') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/join_us')); ?>"><i class="fa fa-share-alt"></i><span>Join Us Links</span></a></li>
 			<?php endif; ?>
-			<?php if(@$user->can('manage_support')): ?>
-			<li class="<?php echo e((Route::current()->uri() == 'admin/support') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/support')); ?>"><i class="fa fa-globe"></i><span>Manage Support</span></a></li>
+			<?php if(@$user->can('manage_support') || $corporate_user): ?>
+			<li class="<?php echo e((Route::current()->uri() == 'admin/support') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/support')); ?>"><i class="fa fa-globe"></i>
+					<?php if($corporate_user): ?>
+					<span>Support</span>
+					<?php else: ?>
+						<span>Manage Support</span>
+
+					<?php endif; ?>
+
+				</a></li>
 			<?php endif; ?>
-			<?php if(@$user->can('manage_site_settings')): ?>
-			<li class="<?php echo e((Route::current()->uri() == 'admin/site_setting') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/site_setting')); ?>"><i class="fa fa-cogs"></i><span>Site Setting</span></a></li>
+			<?php if(@$user->can('manage_site_settings') || $corporate_user): ?>
+			<li class="<?php echo e((Route::current()->uri() == 'admin/site_setting') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/site_setting')); ?>"><i class="fa fa-cogs"></i>
+					<?php if($corporate_user): ?>
+					<span>Setting</span>
+					<?php else: ?>
+						<span>Site Setting</span>
+
+					<?php endif; ?>
+
+				</a></li>
 			<?php endif; ?>
 		</ul>
 	</section>
