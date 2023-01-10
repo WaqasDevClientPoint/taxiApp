@@ -345,6 +345,14 @@
 			<?php if(@$user->can('manage_join_us')): ?>
 			<li class="<?php echo e((Route::current()->uri() == 'admin/join_us') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/join_us')); ?>"><i class="fa fa-share-alt"></i><span>Join Us Links</span></a></li>
 			<?php endif; ?>
+			<?php if($corporate_user): ?>
+			<li class="<?php echo e((Route::current()->uri() == 'admin/site_setting') ? 'active' : ''); ?>"><a href="/corporate/billing"><i class="fa fa-cogs"></i>
+
+						<span>Billing</span>
+
+
+				</a></li>
+			<?php endif; ?>
 			<?php if(@$user->can('manage_support') || $corporate_user): ?>
 			<li class="<?php echo e((Route::current()->uri() == 'admin/support') ? 'active' : ''); ?>"><a href="<?php echo e(url('admin/support')); ?>"><i class="fa fa-globe"></i>
 					<?php if($corporate_user): ?>
