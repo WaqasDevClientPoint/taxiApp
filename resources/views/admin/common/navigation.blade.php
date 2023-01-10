@@ -123,10 +123,10 @@
 					@endif
 				</a>
 				<ul class="treeview-menu">
-					@if(($company_user && @$user->status == 'Active') || @$user->can('manage_manual_booking'))
+					@if(($company_user || $corporate_user && @$user->status == 'Active') || @$user->can('manage_manual_booking'))
 					<li class="{{ (Route::current()->uri() == $first_segment.'/manual_booking/{id?}') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/manual_booking') }}"><i class="fa fa-address-book" aria-hidden="true"></i><span>Manual Booking</span></a></li>
 					@endif
-					@if($company_user || @$user->can('manage_manual_booking'))
+					@if($company_user || $corporate_user || @$user->can('manage_manual_booking'))
 					<li class="{{ (Route::current()->uri() == $first_segment.'/later_booking') ? 'active' : ''  }}"><a href="{{ url($first_segment.'/later_booking') }}"><i class="fa fa-list-alt"></i><span>View Manual/Schedule Booking</span></a></li>
 					@endif
 				</ul>
