@@ -86,6 +86,37 @@
         margin-bottom: 10px;
     }
 </style>
+<script>
+    // var t=$('.toggle:first').val();
+    // $(document).on('change', '.toggle', function() {
+    //     console.log("Asdasd")
+    //     var client_id = $(this).val();
+    //     getClientProject(client_id);
+    // });
+    // $('.toggle').on("click", function() {
+    //     console.log("Asdasd")
+    //     var t=$(this).val();
+    //     console.log({t})
+
+    // });
+    // const toggles = document.querySelectorAll(".toggle");
+    function handleClick(obj,id){
+
+        obj.classList.toggle("is-open");
+
+        var status=obj.classList.contains('is-open')
+        var content=document.getElementById(id);
+
+        if(status==true){
+            content.style.display="block";
+        }
+        else{
+            content.style.display="none";
+        }
+    }
+
+
+</script>
 @extends('admin.template')
 
 @section('main')
@@ -122,179 +153,220 @@
                             </div>
                             <div>
                                 {!! Form::open(['url' => 'corporate/add_policies', 'class' => 'form-horizontal']) !!}
-                                    <div class="form-group">
-                                        <label for="title">Policy title <span>*</span></label>
-                                        <input type="title" name="policy_name" class="form-control" id="title" placeholder="Enter title">
-                                        <span class="text-danger">{{ $errors->first('policy_name') }}</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description">Description of policy <span>Optional</span> </label>
-                                        <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter description"></textarea>
-                                        <span class="text-danger">{{ $errors->first('description') }}</span>
+                                <div class="form-group">
+                                    <label for="title">Policy title <span>*</span></label>
+                                    <input type="title" name="policy_name" class="form-control" id="title" placeholder="Enter title">
+                                    <span class="text-danger">{{ $errors->first('policy_name') }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description of policy <span>Optional</span> </label>
+                                    <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter description"></textarea>
+                                    <span class="text-danger">{{ $errors->first('description') }}</span>
 
-                                    </div>
-                                    <p class="text-center mb-0"><strong> RULES  </strong></p>
-                                    <hr>
+                                </div>
+                                <p class="text-center mb-0"><strong> RULES  </strong></p>
+                                <hr>
 
 
 
-                                    <br>
-                                    {{-- Spending allowance --}}
-                                    <div class="card speeding">
-                                        <div class="card-body">
-                                            <label class="card-title">Spending allowance</label>
-                                            <p class="card-text">Limit the maximum amount of money a person can spend per day</p>
+                                <br>
+                                {{-- Spending allowance --}}
+                                <div class="card speeding">
+                                    <div class="card-body">
+                                        <label class="card-title">Spending allowance</label>
+                                        <label class="switch" style="float: right;">
+                                            <input type="checkbox" class="toggle" onclick='handleClick(this,"speeding-body");'>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <p class="card-text">Limit the maximum amount of money a person can spend</p>
 
-                                            <div class="speeding-body">
+                                        <div class="speeding-body"  id="speeding-body" style="display: none">
 
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="input-group">
-                                                            <input type="text" name="amount_to_spend" class="form-control"
-                                                                   placeholder="Spending allowance">
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text">KES</span>
-                                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <input type="text" name="amount_to_spend" class="form-control"
+                                                               placeholder="Spending allowance">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">KES</span>
                                                         </div>
-                                                        <span class="text-danger">{{ $errors->first('amount_to_spend') }}</span>
+                                                    </div>
+
+                                                    <span class="text-danger">{{ $errors->first('amount_to_spend') }}</span>
+
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <select name="duration" class="form-control">
+                                                            <option value="daily">Per Day</option>
+                                                            <option  value="week">Per Week</option>
+                                                            <option  value="month">Per Month</option>
+                                                            <option  value="year">Per Year</option>
+
+                                                        </select>
 
                                                     </div>
+                                                    <span class="text-danger">{{ $errors->first('amount_to_spend') }}</span>
 
                                                 </div>
 
+
                                             </div>
+
                                         </div>
-
                                     </div>
-                                    {{-- **Spending allowance end** --}}
 
-                                    <br>
-                                    {{-- Number of rides --}}
-                                    <div class="card speeding">
-                                        <div class="card-body">
-                                            <label class="card-title">Number of rides</label>
+                                </div>
+                                {{-- **Spending allowance end** --}}
 
-                                            <p class="card-text">Limit the maximum number of rides a person per day</p>
+                                <br>
+                                {{-- Number of rides --}}
+                                <div class="card speeding">
+                                    <div class="card-body">
+                                        <label class="card-title">Number of rides</label>
+                                        <label class="switch" style="float: right;">
+                                            <input type="checkbox" class="toggle" onclick='handleClick(this,"rides-body");'>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <p class="card-text">Limit the maximum number of rides a person</p>
 
-                                            <div class="speeding-body">
+                                        <div class="rides-body"  id="rides-body" style="display: none">
 
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="input-group">
-                                                            <input type="text" name="no_of_rides" class="form-control"
-                                                                   placeholder="Number of rides">
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text">Max</span>
-                                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <input type="text" name="no_of_rides" class="form-control"
+                                                               placeholder="Number of rides">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">Max</span>
                                                         </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <select name="duration" class="form-control">
+                                                            <option value="daily">Per Day</option>
+                                                            <option  value="week">Per Week</option>
+                                                            <option  value="month">Per Month</option>
+                                                            <option  value="year">Per Year</option>
+
+                                                        </select>
 
                                                     </div>
-                                                    <span class="text-danger">{{ $errors->first('no_of_rides') }}</span>
+                                                    <span class="text-danger">{{ $errors->first('amount_to_spend') }}</span>
 
                                                 </div>
 
+                                                <span class="text-danger">{{ $errors->first('no_of_rides') }}</span>
+
                                             </div>
+
                                         </div>
                                     </div>
-                                    {{-- **Number of rides end**--}}
+                                </div>
+                                {{-- **Number of rides end**--}}
 
-                                    <br>
-                                    {{-- Ride day and time --}}
-                                    <div class="card ride-time">
-                                        <div class="card-body">
-                                            <label class="card-title">Ride day and time</label>
+                                <br>
+                                {{-- Ride day and time --}}
+                                <div class="card ride-time">
+                                    <div class="card-body">
+                                        <label class="card-title">Ride day and time</label>
+                                        <label class="switch" style="float: right;">
+                                            <input type="checkbox" class="toggle" onclick='handleClick(this,"ride-time-body");'>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <p class="card-text">Restrict when users can ride</p>
 
-                                            <p class="card-text">Restrict when users can ride per day</p>
+                                        <div class="ride-time-body"  id="ride-time-body" style="display: none">
 
-                                            <div class="ride-time-body">
+                                            <div class="ride-custom-time">
+                                                <div>
+                                                    <label>Morning</label>
 
-                                                <div class="ride-custom-time">
+                                                    <br>
                                                     <div>
-                                                        <label>Morning</label>
+                                                        <table class="table border-0" style="width:100%;padding: 10px">
+                                                            <tr>
+                                                                <th style="width:40%">Start Time</th>
+                                                                <th style="width:40%">End Time</th>
+                                                                <th style="width:20%"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="time" name="start_time_morning" class="form-control" id="start-time" >
+                                                                    <span class="text-danger">{{ $errors->first('start_time_morning') }}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="time" name="end_time_morning" class="form-control" id="end-time" >
+                                                                    <span class="text-danger">{{ $errors->first('end_time_morning') }}</span>
+                                                                </td>
 
-                                                        <br>
-                                                        <div>
-                                                            <table class="table border-0" style="width:100%;padding: 10px">
-                                                                <tr>
-                                                                    <th style="width:40%">Start Time</th>
-                                                                    <th style="width:40%">End Time</th>
-                                                                    <th style="width:20%"></th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="time" name="start_time_morning" class="form-control" id="start-time" >
-                                                                        <span class="text-danger">{{ $errors->first('start_time_morning') }}</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="time" name="end_time_morning" class="form-control" id="end-time" >
-                                                                        <span class="text-danger">{{ $errors->first('end_time_morning') }}</span>
-                                                                    </td>
-
-                                                                </tr>
-                                                            </table>
-                                                        </div>
+                                                            </tr>
+                                                        </table>
                                                     </div>
-                                                    {{-- Tuesday --}}
+                                                </div>
+                                                {{-- Tuesday --}}
+                                                <div>
+                                                    <label>Afternoon</label>
+
+                                                    <br>
                                                     <div>
-                                                        <label>Afternoon</label>
+                                                        <table class="table border-0" style="width:100%;padding: 10px">
+                                                            <tr>
+                                                                <th style="width:40%">Start Time</th>
+                                                                <th style="width:40%">End Time</th>
+                                                                <th style="width:20%"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="time" name="start_time_afternoon" class="form-control" id="start-time" >
+                                                                    <span class="text-danger">{{ $errors->first('start_time_afternoon') }}</span>
 
-                                                        <br>
-                                                        <div>
-                                                            <table class="table border-0" style="width:100%;padding: 10px">
-                                                                <tr>
-                                                                    <th style="width:40%">Start Time</th>
-                                                                    <th style="width:40%">End Time</th>
-                                                                    <th style="width:20%"></th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="time" name="start_time_afternoon" class="form-control" id="start-time" >
-                                                                        <span class="text-danger">{{ $errors->first('start_time_afternoon') }}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="time" name="end_time_afternoon" class="form-control" id="end-time" >
+                                                                    <span class="text-danger">{{ $errors->first('end_time_afternoon') }}</span>
 
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="time" name="end_time_afternoon" class="form-control" id="end-time" >
-                                                                        <span class="text-danger">{{ $errors->first('end_time_afternoon') }}</span>
+                                                                </td>
 
-                                                                    </td>
-
-                                                                </tr>
-                                                            </table>
-                                                        </div>
+                                                            </tr>
+                                                        </table>
                                                     </div>
+                                                </div>
 
-                                                    {{-- Wednesday --}}
+                                                {{-- Wednesday --}}
+                                                <div>
+                                                    <label>Evening</label>
+
+                                                    <br>
                                                     <div>
-                                                        <label>Evening</label>
+                                                        <table class="table border-0" style="width:100%;padding: 10px">
+                                                            <tr>
+                                                                <th style="width:40%">Start Time</th>
+                                                                <th style="width:40%">End Time</th>
+                                                                <th style="width:20%"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="time" name="start_time_evening" class="form-control" id="start-time" >
+                                                                    <span class="text-danger">{{ $errors->first('start_time_evening') }}</span>
 
-                                                        <br>
-                                                        <div>
-                                                            <table class="table border-0" style="width:100%;padding: 10px">
-                                                                <tr>
-                                                                    <th style="width:40%">Start Time</th>
-                                                                    <th style="width:40%">End Time</th>
-                                                                    <th style="width:20%"></th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="time" name="start_time_evening" class="form-control" id="start-time" >
-                                                                        <span class="text-danger">{{ $errors->first('start_time_evening') }}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="time" name="end_time_evening" class="form-control" id="end-time" >
+                                                                    <span class="text-danger">{{ $errors->first('end_time_evening') }}</span>
 
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="time" name="end_time_evening" class="form-control" id="end-time" >
-                                                                        <span class="text-danger">{{ $errors->first('end_time_evening') }}</span>
+                                                                </td>
 
-                                                                    </td>
-
-                                                                </tr>
-                                                            </table>
-                                                        </div>
+                                                            </tr>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
                                 <div class="box-footer text-center">
                                     <button type="submit" class="btn btn-info" name="submit" value="submit">Submit</button>
@@ -364,9 +436,9 @@
     </div>
 @endsection
 @push('scripts')
-{{--    <link rel="stylesheet" href="{{ url('css/buttons.dataTables.css') }}">--}}
-{{--    <script src="{{ url('js/dataTables.buttons.js') }}"></script>--}}
-{{--    <script src="{{ url('js/buttons.server-side.js') }}"></script>--}}
+    {{--    <link rel="stylesheet" href="{{ url('css/buttons.dataTables.css') }}">--}}
+    {{--    <script src="{{ url('js/dataTables.buttons.js') }}"></script>--}}
+    {{--    <script src="{{ url('js/buttons.server-side.js') }}"></script>--}}
     {{-- {!! $dataTable->scripts() !!} --}}
 @endpush
 

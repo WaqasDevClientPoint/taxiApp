@@ -19,8 +19,74 @@
   @if(LOGIN_USER_TYPE=='company' || LOGIN_USER_TYPE=='corporate' || auth('admin')->user()->can('manage_trips'))
   <!-- Main content -->
   <section class="content">
+    @if(LOGIN_USER_TYPE == 'corporate')
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="{{ url('admin/rider') }}" class="small-box">
+            <div class="inner">
+              <p>Total Riders</p>
+              <h3>{{ $total_rider }}</h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
+          <!-- <a href="{{ url('admin/rider') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+            <div class="inner">
+              <p>Total Trips</p>
+              <h3>{{$total_trips}}</h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-cab"></i>
+            </div>
+          <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="{{ url('admin/rider') }}" class="small-box">
+            <div class="inner">
+              <p>Today Riders</p>
+              <h3>{{ $today_rider_count }}</h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
+          <!-- <a href="{{ url('admin/rider') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+            <div class="inner">
+              <p>Today Trips</p>
+              <h3>{{$today_trips}}</h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-cab"></i>
+            </div>
+          <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+
+
+      </div>
+    @endif
+
+
     <!-- Small boxes (Stat box) -->
     <div class="row">
+      @if(LOGIN_USER_TYPE != 'corporate')
+
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
@@ -34,8 +100,9 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
+      @endif
 
-      @if(LOGIN_USER_TYPE == 'company')
+      @if(LOGIN_USER_TYPE == 'company' && LOGIN_USER_TYPE != 'corporate')
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/statements/overall') }}" class="small-box">
@@ -52,7 +119,7 @@
       </div>
       @endif
 
-      @if(LOGIN_USER_TYPE!='company')
+      @if(LOGIN_USER_TYPE!='company' && LOGIN_USER_TYPE!='corporate')
       <!-- ./col -->
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
@@ -71,6 +138,8 @@
       @endif
 
       <!-- ./col -->
+      @if(LOGIN_USER_TYPE!='corporate')
+
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box">
@@ -85,6 +154,9 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
+      @endif
+      @if(LOGIN_USER_TYPE!='corporate')
+
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
@@ -99,13 +171,15 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
+      @endif
       <!-- ./col -->
     </div>
     <!-- ./col -->
     <!-- /.row -->
     <!-- Small boxes (Stat box) -->
     <div class="row">
-      <div class="col-lg-3 col-xs-6">
+      @if(LOGIN_USER_TYPE!='corporate')
+        <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
           <div class="inner">
@@ -118,7 +192,8 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
-      @if(LOGIN_USER_TYPE == 'company')
+      @endif
+      @if(LOGIN_USER_TYPE == 'company' && LOGIN_USER_TYPE!='corporate')
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/statements/overall') }}" class="small-box">
@@ -136,7 +211,7 @@
       @endif
       <!-- ./col -->
       <!-- ./col -->
-      @if(LOGIN_USER_TYPE!='company')
+      @if(LOGIN_USER_TYPE!='company' && LOGIN_USER_TYPE!='corporate')
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url('admin/rider') }}" class="small-box">
@@ -153,7 +228,9 @@
       </div>
       @endif
       <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
+        @if(LOGIN_USER_TYPE!='corporate')
+
+        <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box">
           <div class="inner">
@@ -167,7 +244,10 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
-      <div class="col-lg-3 col-xs-6">
+        @endif
+        @if(LOGIN_USER_TYPE!='corporate')
+
+        <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
           <div class="inner">
@@ -181,12 +261,15 @@
           <!-- <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
+        @endif
 
     </div>
     <!-- /.row -->
     <!-- Main row -->
     <div class="row">
       <!-- Left col -->
+      @if(LOGIN_USER_TYPE!='corporate')
+
       <section class="col-lg-7 connectedSortable">
         <input type="hidden" value='{{ $line_chart_data }}' id="line-chart-data">
         <!-- [ {"y": "2013 Q1", "amount": 2666}, {"y": "2011 Q2", "amount": 2778}, {"y": "2011 Q3", "amount": 4912}, {"y": "2012 Q1", "amount": 6810}, {"y": "2012 Q2", "amount": 5670}, {"y": "2012 Q3", "amount": 4820}, {"y": "2013 Q1", "amount": 10687}, {"y": "2013 Q2", "amount": 8432}, {"y": "2016 Q3", "amount": 8432} ] -->
@@ -209,6 +292,7 @@
           </div>
         </div>
       </section>
+    @endif
       <!-- /.Left col -->
       <!-- right col (We are only adding the ID to make the widgets sortable)-->
       <section class="col-lg-5 connectedSortable">
