@@ -325,16 +325,14 @@ class DriverController extends Controller
             	'status_message' => $validator->messages()->first()
             ]);
         }
-        
-		$trip = Trips::where('id', $request->trip_id)->first();
-
-		if ($trip->status != 'Payment') {
-			return response()->json([
-				'status_code' => '0',
-				'status_message' => __('messages.api.something_went_wrong'),
-			]);
-		}
-		if ($trip->is_calculation == 0) {
+		$tripes = Trips::where('id', $request->trip_id)->first();
+//		if ($tripes->status != 'Payment') {
+//			return response()->json([
+//				'status_code' => '0',
+//				'status_message' => __('messages.api.something_went_wrong'),
+//			]);
+//		}
+		if ($tripes->is_calculation == 0) {
 			$data = [
 				'trip_id' => $request->trip_id,
 				'user_id' => $user_details->id,
@@ -345,9 +343,9 @@ class DriverController extends Controller
 		}
 
 		$trip_save = Trips::where('id', $request->trip_id)->first();
-		$trip_save->status = 'Completed';
+		$trip_save->status = 'Rating';
 		$trip_save->paykey = @$request->paykey;
-		$trip_save->payment_status = 'Completed';
+		$trip_save->payment_status = 'Rating';
 		$trip_save->save();
 
 		if($trip->pool_id>0) {
@@ -357,7 +355,7 @@ class DriverController extends Controller
 			
 			if(!$trips) {
 				// update status
-				$pool_trip->status = 'Completed';
+				$pool_trip->status = 'Rating';
 				$pool_trip->save();
 			}
 		}

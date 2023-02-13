@@ -50,7 +50,13 @@ class AdminController extends Controller
             }
         })
         ->count();
-        $data['total_rider'] = with(clone $users)->where('user_type','Rider')->count();
+        $data['total_rider'] = with(clone $users)->where('user_type','Rider')
+                               ->where(function ($query){
+                                   if(LOGIN_USER_TYPE=='corporate') {
+                                       $query->where('corporate_id',Auth::guard('corporate')->user()->id);
+                                   }
+                               })->count();
+
 
         //if login user is company then only get company drivers
         $data['today_driver_count'] = with(clone $users)->whereDate('created_at', '=', date('Y-m-d'))
@@ -61,7 +67,13 @@ class AdminController extends Controller
         })
         ->where('user_type','Driver')
         ->count();
-        $data['today_rider_count'] = with(clone $users)->whereDate('created_at', '=', date('Y-m-d'))->where('user_type','Rider')->count();
+        $data['today_rider_count'] = with(clone $users)->whereDate('created_at', '=', date('Y-m-d'))->where('user_type','Rider')
+            ->where(function($query)  {
+                if(LOGIN_USER_TYPE=='corporate') {
+                    $query->where('corporate_id',Auth::guard('corporate')->user()->id);
+                }
+            })
+            ->count();
 
         $default_currency = Currency::active()->defaultCurrency()->first();
         if (LOGIN_USER_TYPE=='company' && session()->get('currency') != null) {  //if login user is company then get session currency
@@ -111,6 +123,11 @@ class AdminController extends Controller
                 $join->on('trips.driver_id', '=', 'users.id')->where('company_id',Auth::guard('company')->user()->id);
             });
         }
+        if(LOGIN_USER_TYPE=='corporate') {
+            $today_trips->join('users', function($join) {
+                $join->on('trips.user_id', '=', 'users.id')->where('corporate_id',Auth::guard('corporate')->user()->id);
+            });
+        }
         $data['today_trips'] = $today_trips->count();
 
         //if login user is company then get only company driver's trip
@@ -119,6 +136,11 @@ class AdminController extends Controller
         if(LOGIN_USER_TYPE=='company') {   
             $total_trips->join('users', function($join) {
                 $join->on('trips.driver_id', '=', 'users.id')->where('company_id',Auth::guard('company')->user()->id);
+            });
+        }
+        if(LOGIN_USER_TYPE=='corporate') {
+            $total_trips->join('users', function($join) {
+                $join->on('trips.user_id', '=', 'users.id')->where('corporate_id',Auth::guard('corporate')->user()->id);
             });
         }
         $data['total_trips'] = $total_trips->count();

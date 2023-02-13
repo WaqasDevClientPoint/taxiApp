@@ -1,9 +1,161 @@
+<style>
+
+	h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+		font-family: 'Poppins', sans-serif;
+	}
+	.main-sidebar, .left-side{
+		position: fixed;
+		top: 0;
+		left: 0;
+		min-height: 100%;
+		width: 250px;
+		z-index: 810;
+		-webkit-transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
+		-moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
+		-o-transition: -o-transform .3s ease-in-out, width .3s ease-in-out;
+		transition: transform .3s ease-in-out, width .3s ease-in-out;
+		max-height: 100%;
+		background-color: #F2F3F5;
+		border-radius: 20px;
+		height: 100%;
+		overflow: hidden;
+		margin: 15px;
+	}
+	.main-sidebar .sidebar{
+		padding: 15px 0 0 0;
+		max-height: 90vh;
+		overflow-y: auto;
+		box-sizing: content-box;
+		background-color: #F2F3F5;
+		border-radius: 20px !important;
+		height: 100% !important;
+	}
+	.skin-purple .main-sidebar{
+		border-radius: 20px;
+		height: 100%;
+	}
+
+	.skin-purple .sidebar-menu>li>a {
+		border-left: 3px solid transparent;
+	}
+
+	.skin-purple .sidebar a {
+		color: #5E6278;
+	}
+	.skin-purple .sidebar-menu>li:hover>a, .skin-purple .sidebar-menu>li.active>a {
+		color: #181C32;
+		background: transparent;
+		border-left-color: #181C32;
+		font-weight: bold;
+	}
+	.main-header .sidebar-toggle{
+		background-color: #f2f3f5;
+		padding: 8px 15px 5px 15px;
+		margin-left: 0;
+		margin-top: 18px;
+	}
+	.main-header > .navbar{
+		margin-left: 280px;
+	}
+	.main-header .sidebar-toggle:before{
+		color: black;
+	}
+	.skin-purple .main-header .navbar .sidebar-toggle:hover{
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+	.skin-purple .treeview-menu>li>a{
+		color: #5E6278;
+	}
+	.skin-purple .sidebar-menu > li > .treeview-menu{
+		background-color: #F2F3F5;
+	}
+	a{
+		background-color: transparent;
+	}
+	.main-header .sidebar-toggle:focus, .main-header .sidebar-toggle:active{
+		background: #f2f3f5;
+	}
+	@media (min-width: 768px){
+		.sidebar-mini.sidebar-collapse .content-wrapper,
+		.sidebar-mini.sidebar-collapse .main-header .navbar,
+		.sidebar-mini.sidebar-collapse .right-side,
+		.sidebar-mini.sidebar-collapse .main-footer{
+			margin-left: 80px !important;
+		}
+	}
+	.content-header>h1 {
+		margin: 0 0 5px;
+		font-size: 22px;
+		color: #181C32;
+		font-weight: bold;
+	}
+	.sidebar a.logo{
+		padding: 0;
+	}
+	.sidebar .logo img{
+		max-width: 160px;
+	}
+	.main-footer{
+		margin-left: 280px;
+	}
+	.main-sidebar:before{
+		display: none;
+	}
+	.skin-purple .sidebar-menu>li:hover>a, .skin-purple .sidebar-menu>li.active>a{
+		border-left-color: #2166eb;
+	}
+	/*small-box css*/
+	.small-box .icon{
+		-webkit-transition: all .3s linear;
+		-o-transition: all .3s linear;
+		transition: all .3s linear;
+		position: unset;
+		z-index: 0;
+		background: transparent;
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		font-size: 30px;
+		padding: 15px;
+		text-align: center;
+		color: #fff;
+		margin-left: auto;
+	}
+	.small-box {
+		display: flex;
+		align-items: center;
+		padding: 3em;
+		height: 210px;
+		justify-content: center;
+	}
+	.small-box {
+		border-radius: 15px !important;
+		position: relative;
+		margin-bottom: 20px;
+		background-color: #EFEFEF;
+		margin: 10px 0 20px;
+		box-shadow: unset;
+	}
+	.small-box > .inner{
+		padding: 0;
+	}
+	.content-header>.breadcrumb {
+		float: unset;
+		background: transparent;
+		margin-top: 0;
+		margin-bottom: 0;
+		font-size: 12px;
+		padding: 7px 5px;
+		position: unset;
+	}
+
+
+</style>
 <aside class="main-sidebar">
 	<section class="sidebar">
-		<a href="<?php echo e(url(LOGIN_USER_TYPE.'/dashboard')); ?>" class="logo">
-	      <span class="logo-mini"><b><?php echo e($site_name); ?></b></span>
-	      <span class="logo-lg"><b><?php echo e($site_name); ?></b></span>
-	    </a>
+		<a href="https://poolus.biz/admin/dashboard" class="logo">
+			<img src="https://poolus.biz/admin_assets/dist/img/pool-Logo.png" alt="logo">
+		</a>
 		<!-- <div class="user-panel">
 			<div class="pull-left image">
 				<?php
@@ -123,7 +275,7 @@
 					<?php endif; ?>
 				</a>
 				<ul class="treeview-menu">
-					<?php if(($company_user || $corporate_user && @$user->status == 'Active') || @$user->can('manage_manual_booking')): ?>
+					<?php if(($company_user || $corporate_user || @$user->status == 'Active') || @$user->can('manage_manual_booking')): ?>
 					<li class="<?php echo e((Route::current()->uri() == $first_segment.'/manual_booking/{id?}') ? 'active' : ''); ?>"><a href="<?php echo e(url($first_segment.'/manual_booking')); ?>"><i class="fa fa-address-book" aria-hidden="true"></i><span>Manual Booking</span></a></li>
 					<?php endif; ?>
 					<?php if($company_user || $corporate_user || @$user->can('manage_manual_booking')): ?>

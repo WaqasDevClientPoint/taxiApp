@@ -557,7 +557,7 @@ class TripController extends Controller
             $image_url = url('/').'/images/map/'.$trip->id.'/'.$file_name;
 		}
 
-		$status = 'Rating';
+		$status = 'Payment';
 		$trip_data = [
 			'drop_latitude'	=> $request->end_latitude,
 			'drop_longitude'=> $request->end_longitude,
@@ -626,7 +626,7 @@ class TripController extends Controller
 			$trips = $pool_trip->trips->whereIn('status',['Scheduled','Begin trip','End trip'])->count();
 			if(!$trips) {
 				// update status
-				$pool_trip->status = 'Rating';
+				$pool_trip->status = 'Payment';
 				// update driver location once pool trip end
 				DriverLocation::where('user_id', $user_details->id)->update(['pool_trip_id' => NULL,'status' => 'Online']);
 			}

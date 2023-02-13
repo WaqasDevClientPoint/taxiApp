@@ -80,6 +80,7 @@ class InvoiceHelper
 		$trips = Trips::where('id', $data['trip_id'])->first();
 		$user = User::where('id', $data['user_id'])->first();
 
+
 		//Time calculation
 		$arrive_time = new DateTime($trips->arrive_time);
 		$begin_time = new DateTime($trips->begin_trip);
@@ -235,7 +236,7 @@ class InvoiceHelper
 					}
 				}
 				else if ($total_fare < $wallet_amount) {
-					$remaining_wallet = $wallet_amount - $total_fare;
+                    $remaining_wallet = $wallet_amount - $total_fare;
 					$amount = 0;
 					$applied_wallet = $total_fare;
 				}
@@ -716,7 +717,13 @@ class InvoiceHelper
 		$current_trip = Trips::where('id', $trip_id)->first();
 	  	// deduction
 	  	$driver_owe_amount = DriverOweAmount::where('user_id',$driver_id)->first();
-	  	$owe_amount = $remaining_owe_amount = $driver_owe_amount->amount+$current_trip->owe_amount;
+
+	  	if(isset($driver_owe_amount)){
+            $owe_amount = $remaining_owe_amount = $driver_owe_amount->amount+$current_trip->owe_amount;
+	  	}else{
+            $owe_amount = $remaining_owe_amount = 0+$current_trip->owe_amount;
+
+        }
 	  	$applied_owe_amount = 0;
 
 	   	if($owe_amount != 0) {

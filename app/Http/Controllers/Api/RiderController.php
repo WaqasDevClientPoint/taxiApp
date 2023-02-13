@@ -78,10 +78,73 @@ class RiderController extends Controller
             ]);
         }
 
+
+
 		if($request->timezone) {
 			date_default_timezone_set($request->timezone);
 			$current_time = date('H:i:00');
 		}
+
+        if(!empty($user_details->corporate_id)){
+
+            $group=  App\Models\Group::where('id',$user_details->group_id)->first();
+            $policy=  App\Models\Policies::where('policies.id',$group->policy_id)->first();
+//            $bookingTime= DB::table('bookings_time')->where('policy_id',$policy->id)->get();
+
+            //no of rides check
+            $trips=Trips::whereDate('created_at','=',Carbon::today())->where('user_id',$user_details->id)->get();
+
+            if(count($trips)>=$policy->no_of_rides){
+                return response()->json([
+                    'status_message' => 'Your rides limit is over',
+                    'status_code' => '0',
+                ]);
+            }
+
+            $totalAmount=0;
+
+            foreach($trips as $trip){
+                $totalAmount=$totalAmount+$trip->base_fare;
+            }
+            if($totalAmount>=$policy->amount_to_spend){
+                return response()->json([
+                    'status_message' => 'Your ride balance exceed the limit',
+                    'status_code' => '0',
+                ]);
+            }
+
+            $current_day = Carbon::now()->format('l');
+            $now = Carbon::now();
+
+            $hour = $now->hour;
+            $part_of_day='';
+            if ($hour >= 5 && $hour < 12) {
+                $part_of_day= "morning";
+            } elseif ($hour >= 12 && $hour < 17) {
+                $part_of_day= "afternoon";
+            } else {
+                $part_of_day= "evening";
+            }
+
+//            dd($part_of_day);
+
+
+            $bookingTime= DB::table('bookings_time')->where('policy_id',$policy->id)->where('day',$current_day)->where('dayTime',$part_of_day)->first();
+            $string = $bookingTime->time;
+                $parts = explode("-", $string);
+
+                $time = Carbon::now();
+                $compare_time = Carbon::parse($parts[0]);
+                $compare_time1 = Carbon::parse($parts[1]);
+                if(!empty($parts[0]) && !empty($parts[1])){
+                    if ($time->lt($compare_time) || $time->gt($compare_time1)) {
+                        return response()->json([
+                            'status_message' => 'Your cannot book ride at this time',
+                            'status_code' => '0',
+                        ]);
+                    }
+                }
+        }
 
 		$current_time = date('H:i:00');
 		$day = date('N');
@@ -109,8 +172,15 @@ class RiderController extends Controller
 				'status_code' => '0',
 			]);
 		}
+        $location_cars = ManageFare::where('location_id',$match_location->id);
 
-		$location_cars = ManageFare::where('location_id',$match_location->id)->get()->toArray();
+        if(empty($user_details->corporate_id)){
+            $location_cars=$location_cars->where('vehicle_id','!=',10);
+        }else{
+            $location_cars=$location_cars->where('vehicle_id',10);
+        }
+
+		$location_cars=$location_cars->get()->toArray();
 
         $vehicles 	= array_column($location_cars,'vehicle_id');
         $location_id= $match_location->id;
@@ -176,11 +246,14 @@ class RiderController extends Controller
 			if($is_schedule=='1')
 				$q2->where('is_pool', 'No');
 		})
-		
-		->havingRaw(('case WHEN status="Online" THEN distance<='.site_settings('driver_km').' ELSE distance<='.site_settings('pickup_km').' END'))
+//            ->where('driver_location.car_id','==', 0)
+
+
+            ->havingRaw(('case WHEN status="Online" THEN distance<='.site_settings('driver_km').' ELSE distance<='.site_settings('pickup_km').' END'))
 		->orderBy('distance', 'ASC')
 		->take(5)
 		->get();
+
 
 		if($is_schedule!='1') {
 			$nearest_car = $nearest_car->filter(function($near_car) use($lat_lng_array) {
@@ -382,17 +455,17 @@ class RiderController extends Controller
 			}
 		}
 
-		$cars = CarType::with(['manage_fare' =>function($q) use ($location_id) {
-			$q->where('location_id',$location_id);
-		}])
-		->whereIn('id',$vehicles)
-		->where('status', 'Active');
+        $cars = CarType::with(['manage_fare' =>function($q) use ($location_id) {
+            $q->where('location_id',$location_id);
+        }])
+            ->whereIn('id',$vehicles)
+            ->where('status', 'Active');
 
-		if($is_schedule=='1') {
-			$cars->where('is_pool', 'No');
-		}
+        if($is_schedule=='1') {
+            $cars->where('is_pool', 'No');
+        }
 
-		if(isset($car_s)) {
+        if(isset($car_s)) {
 			$car_id = array_column($car_s, 'car_id');
 			$cars = $cars->whereNotIn('id', $car_id)->get();
 		} else {

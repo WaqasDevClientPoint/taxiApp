@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="4f5a2fdb-949c-47e7-9505-7e9d928fa6ce" name="154.29.74.233" url="http://154.29.74.233">
-        <fileTransfer rootFolder="/web/improved.poolus.biz/public_html" host="154.29.74.233" port="21">
+      <webServer id="845879e7-d3c1-4978-878f-f0c9e69d37e6" name="pool live" url="http://81.181.198.164">
+        <fileTransfer rootFolder="/web/poolus.biz/public_html" host="81.181.198.164" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

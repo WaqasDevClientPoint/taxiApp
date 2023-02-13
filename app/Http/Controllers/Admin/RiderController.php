@@ -124,12 +124,20 @@ class RiderController extends Controller
                 return back()->withErrors($validator)->withInput();
             }
 
+            if(isset($request->country_id) && !empty($request->country_id)){
+                $country_id=$request->country_id;
+            }else{
+                $cId=Country::select('id')->where('phone_code',$request->country_code)->first();
+                $country_id=$cId->id;
+            }
+
+
             $user = new User;
             $user->first_name   = $request->first_name;
             $user->last_name    = $request->last_name;
             $user->email        = $request->email;
             $user->country_code = $request->country_code;
-            $user->country_id   = $request->country_id;
+            $user->country_id   = $country_id;
             $user->mobile_number= $request->mobile_number;
             $user->gender       = $request->gender;
             $user->password     = $request->password;

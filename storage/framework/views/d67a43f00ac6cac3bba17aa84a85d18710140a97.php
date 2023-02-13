@@ -17,9 +17,74 @@
   <?php if(LOGIN_USER_TYPE=='company' || LOGIN_USER_TYPE=='corporate' || auth('admin')->user()->can('manage_trips')): ?>
   <!-- Main content -->
   <section class="content">
+    <?php if(LOGIN_USER_TYPE == 'corporate'): ?>
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="<?php echo e(url('admin/rider')); ?>" class="small-box">
+            <div class="inner">
+              <p>Total Riders</p>
+              <h3><?php echo e($total_rider); ?></h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
+          <!-- <a href="<?php echo e(url('admin/rider')); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box">
+            <div class="inner">
+              <p>Total Trips</p>
+              <h3><?php echo e($total_trips); ?></h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-cab"></i>
+            </div>
+          <!-- <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="<?php echo e(url('admin/rider')); ?>" class="small-box">
+            <div class="inner">
+              <p>Today Riders</p>
+              <h3><?php echo e($today_rider_count); ?></h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
+          <!-- <a href="<?php echo e(url('admin/rider')); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box">
+            <div class="inner">
+              <p>Today Trips</p>
+              <h3><?php echo e($today_trips); ?></h3>
+
+            </div>
+            <div class="icon">
+              <i class="fa fa-cab"></i>
+            </div>
+          <!-- <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+          </a>
+        </div>
+
+
+      </div>
+    <?php endif; ?>
+
+
     <!-- Small boxes (Stat box) -->
     <div class="row">
       <?php if(LOGIN_USER_TYPE != 'corporate'): ?>
+
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box">
@@ -52,7 +117,7 @@
       </div>
       <?php endif; ?>
 
-      <?php if(LOGIN_USER_TYPE!='company'): ?>
+      <?php if(LOGIN_USER_TYPE!='company' && LOGIN_USER_TYPE!='corporate'): ?>
       <!-- ./col -->
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
@@ -71,9 +136,9 @@
       <?php endif; ?>
 
       <!-- ./col -->
-        <?php if(LOGIN_USER_TYPE!='corporate'): ?>
+      <?php if(LOGIN_USER_TYPE!='corporate'): ?>
 
-        <div class="col-lg-3 col-xs-6">
+      <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="<?php echo e(url(LOGIN_USER_TYPE.'/driver')); ?>" class="small-box">
           <div class="inner">
@@ -87,7 +152,9 @@
           <!-- <a href="<?php echo e(url(LOGIN_USER_TYPE.'/driver')); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
-        <?php endif; ?>
+      <?php endif; ?>
+      <?php if(LOGIN_USER_TYPE!='corporate'): ?>
+
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box">
@@ -102,6 +169,7 @@
           <!-- <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
+      <?php endif; ?>
       <!-- ./col -->
     </div>
     <!-- ./col -->
@@ -109,8 +177,7 @@
     <!-- Small boxes (Stat box) -->
     <div class="row">
       <?php if(LOGIN_USER_TYPE!='corporate'): ?>
-
-      <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box">
           <div class="inner">
@@ -124,7 +191,7 @@
         </a>
       </div>
       <?php endif; ?>
-      <?php if(LOGIN_USER_TYPE == 'company'): ?>
+      <?php if(LOGIN_USER_TYPE == 'company' && LOGIN_USER_TYPE!='corporate'): ?>
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="<?php echo e(url(LOGIN_USER_TYPE.'/statements/overall')); ?>" class="small-box">
@@ -142,7 +209,7 @@
       <?php endif; ?>
       <!-- ./col -->
       <!-- ./col -->
-      <?php if(LOGIN_USER_TYPE!='company'): ?>
+      <?php if(LOGIN_USER_TYPE!='company' && LOGIN_USER_TYPE!='corporate'): ?>
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="<?php echo e(url('admin/rider')); ?>" class="small-box">
@@ -176,7 +243,9 @@
         </a>
       </div>
         <?php endif; ?>
-      <div class="col-lg-3 col-xs-6">
+        <?php if(LOGIN_USER_TYPE!='corporate'): ?>
+
+        <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box">
           <div class="inner">
@@ -190,14 +259,15 @@
           <!-- <a href="<?php echo e(url(LOGIN_USER_TYPE.'/trips')); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </a>
       </div>
+        <?php endif; ?>
 
     </div>
     <!-- /.row -->
     <!-- Main row -->
-    <?php if(LOGIN_USER_TYPE!='corporate'): ?>
-
     <div class="row">
       <!-- Left col -->
+      <?php if(LOGIN_USER_TYPE!='corporate'): ?>
+
       <section class="col-lg-7 connectedSortable">
         <input type="hidden" value='<?php echo e($line_chart_data); ?>' id="line-chart-data">
         <!-- [ {"y": "2013 Q1", "amount": 2666}, {"y": "2011 Q2", "amount": 2778}, {"y": "2011 Q3", "amount": 4912}, {"y": "2012 Q1", "amount": 6810}, {"y": "2012 Q2", "amount": 5670}, {"y": "2012 Q3", "amount": 4820}, {"y": "2013 Q1", "amount": 10687}, {"y": "2013 Q2", "amount": 8432}, {"y": "2016 Q3", "amount": 8432} ] -->
@@ -220,6 +290,7 @@
           </div>
         </div>
       </section>
+    <?php endif; ?>
       <!-- /.Left col -->
       <!-- right col (We are only adding the ID to make the widgets sortable)-->
       <section class="col-lg-5 connectedSortable">
@@ -243,7 +314,6 @@
       </section>
       <!-- right col -->
     </div>
-    <?php endif; ?>
     <!-- /.row (main row) -->
   </section>
   <!-- /.content -->

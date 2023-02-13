@@ -84,11 +84,24 @@ Route::group(['prefix' => (LOGIN_USER_TYPE=='company')?'company':'admin', 'middl
 	Route::match(array('GET', 'POST'), 'delete_driver/{id}', 'DriverController@delete')->middleware('admin_can:delete_driver');
 	Route::post('get_documents', 'DriverController@get_documents');
 
-	// Manage Company
-	Route::get('company', 'CompanyController@index')->middleware('admin_can:view_company');
-	Route::match(array('GET', 'POST'), 'add_company', 'CompanyController@add')->middleware('admin_can:create_company');
-	Route::match(array('GET', 'POST'), 'edit_company/{id}', 'CompanyController@update')->middleware('admin_can:update_company');
-	Route::match(array('GET', 'POST'), 'delete_company/{id}', 'CompanyController@delete')->middleware('admin_can:delete_company');
+	// Manage Corporates
+	Route::get('corporates', 'CorporateController@index')->middleware('admin_can:view_corporate');
+	Route::match(array('GET', 'POST'), 'add_corporate', 'CorporateController@add')->middleware('admin_can:create_corporate');
+	Route::match(array('GET', 'POST'), 'edit_corporate/{id}', 'CorporateController@update')->middleware('admin_can:update_corporate');
+	Route::match(array('GET', 'POST'), 'delete_corporate/{id}', 'CorporateController@delete')->middleware('admin_can:delete_corporate');
+
+	//Manage Corporate Billings
+
+    Route::get('manage_corporate_billings', 'CorporateBillingController@index');
+//    Route::match(array('GET', 'POST'), 'add_corporate', 'CorporateController@add')->middleware('admin_can:create_corporate');
+    Route::match(array('GET', 'POST'), 'edit_corporate_billing/{id}', 'CorporateBillingController@update')->middleware('admin_can:view_corporate');
+//    Route::match(array('GET', 'POST'), 'delete_corporate/{id}', 'CorporateController@delete')->middleware('admin_can:delete_corporate');
+
+    // Manage Company
+    Route::get('company', 'CompanyController@index')->middleware('admin_can:view_company');
+    Route::match(array('GET', 'POST'), 'add_company', 'CompanyController@add')->middleware('admin_can:create_company');
+    Route::match(array('GET', 'POST'), 'edit_company/{id}', 'CompanyController@update')->middleware('admin_can:update_company');
+    Route::match(array('GET', 'POST'), 'delete_company/{id}', 'CompanyController@delete')->middleware('admin_can:delete_company');
 
 	// Manage Statements
 	Route::group(['middleware' =>  'admin_can:manage_statements'], function() {
@@ -431,6 +444,9 @@ Route::group(['prefix' => (LOGIN_USER_TYPE=='corporate')?'corporate':'admin', 'm
     Route::get('policies', 'PolicyController@index')->middleware('admin_can:view_policies');
     Route::match(array('GET', 'POST'), 'add_policies', 'PolicyController@add')->middleware('admin_can:create_policies');
 
+    Route::get('billing', 'BillingController@index')->middleware('admin_can:view_billings');
+    Route::match(array('POST'), 'add_billings', 'BillingController@add')->middleware('admin_can:create_billings');
+    Route::match(array('GET'), 'stripe/token', 'BillingController@getToken');
 
 
     // Manage Driver

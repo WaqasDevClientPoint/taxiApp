@@ -87,7 +87,7 @@ class ApiCredentialsController extends Controller
         if(CheckGetInTuchpopup()){
                 ApiCredentials::where(['name' => 'site_key', 'site' => 'Recaptcha'])->update(['value' => $request->recaptcha_site_key]);
                 ApiCredentials::where(['name' => 'secret_key', 'site' => 'Recaptcha'])->update(['value' => $request->recaptcha_secret_key]);
-            }
+        }
 
         $image_uploader = resolve('App\Contracts\ImageHandlerInterface');
 		$dir_name = resource_path();

@@ -118,6 +118,8 @@ class RatingController extends Controller
 	{
 		$user_details = JWTAuth::parseToken()->authenticate();
 
+
+
 		$request->merge(['payment_mode' =>strtolower($request->payment_mode)]);
 		$rules = array(
 			'user_type' => 'required|in:Rider,rider,Driver,driver',
@@ -125,6 +127,7 @@ class RatingController extends Controller
 			'payment_mode' => 'in:paypal,stripe,cash,braintree,onlinepayment',
 			'is_wallet' => 'in:Yes,No',
 		);
+
 
 		$validator = Validator::make($request->all(), $rules);
 
@@ -135,9 +138,10 @@ class RatingController extends Controller
             ]);
 		}
 		// set onlinepayment as paypal for temporary
-		$request->payment_mode = ($request->payment_mode=='onlinepayment' || $request->payment_mode=='paypal')?'PayPal':ucfirst($request->payment_mode);
+        if(!empty($request->payment_mode)){
+            $request->payment_mode = ($request->payment_mode=='onlinepayment' || $request->payment_mode=='paypal')?'PayPal':ucfirst($request->payment_mode);
+        }
 
-		
 
 		$user = User::where('id', $user_details->id)->first();
 
@@ -145,7 +149,9 @@ class RatingController extends Controller
 
 		$save = 0;
 		if ($request->payment_mode && $trips->is_calculation == 0) { //if is_calculation is zero and payment_mode send then update payment mode in table
-			$payment_method_store = $request->payment_mode;
+
+
+		    $payment_method_store = $request->payment_mode;
 			if ($request->is_wallet == 'Yes' && $payment_method_store != 'Wallet') {
 				$payment_method_store = $request->payment_mode . ' & Wallet';
 			}
@@ -157,18 +163,42 @@ class RatingController extends Controller
 			$rideRequest->save();
 			ScheduleRide::where('id', $rideRequest->schedule_id)->update(['payment_method' => $rideRequest->payment_mode]);
 		}
-		
-		if ($trips->status == 'Payment') {
+
+          $status='';
+         if($trips->status=='Rating' && $trips->user_type=='driver'){
+             $status='Payment';
+         }else{
+             $status='Rating';
+
+         }
+		if ($status == 'Payment') {
 			$data = [
 				'trip_id' 	=> $request->trip_id,
 				'user_type' => $request->user_type,
 				'user_id' 	=> $user->id,
 				'save_to_trip_table' => $save,
 			];
+            $trip_save = Trips::where('id', $request->trip_id)->first();
+            $trip_save->status = 'Rating';
+            $trip_save->payment_status = 'Pending';
+            $trip_save->save();
+
 			$trips = $this->invoice_helper->calculation($data);
 			return $this->invoice_helper->getInvoice($trips,$data);
 		}
+        if ($status == 'Rating') {
+            $data = [
+                'trip_id' 	=> $request->trip_id,
+                'user_type' => $request->user_type,
+                'user_id' 	=> $user->id,
+                'save_to_trip_table' => $save,
+            ];
 
+            $trips = $this->invoice_helper->calculation($data);
+
+
+            return $this->invoice_helper->getInvoice($trips,$data);
+        }
 		return response()->json([
 			'status_code' 	 => '2',
 			'status_message' => __('messages.api.something_went_wrong'),
@@ -190,6 +220,8 @@ class RatingController extends Controller
 			'rating' => 'required',
 			'trip_id' => 'required',
 		);
+
+
 
 		$validator = Validator::make($request->all(), $rules);
 
@@ -237,14 +269,14 @@ class RatingController extends Controller
 
 		$trip = Trips::where('id', $request->trip_id)->first();
 
-		if(!in_array($trip->status,['Rating','Payment'])) {
-			return response()->json([
-				'status_code' => '2',
-				'status_message' => __('messages.api.trip_already_completed'),
-			]);
-		}
-		$trip->status = 'Payment';
-
+//		if(!in_array($trip->status,['Rating','Payment'])) {
+//			return response()->json([
+//				'status_code' => '2',
+//				'status_message' => __('messages.api.trip_already_completed'),
+//			]);
+//		}
+		$trip->status = 'Completed';
+        $trip->payment_status = 'Completed';
 		if($user_type == 'rider') {
 			$currency_code = $user_details->currency->code;
 			$tips 		= currencyConvert($currency_code, $trip->getOriginal('currency_code'),$request->tips);
@@ -260,7 +292,7 @@ class RatingController extends Controller
 			
 			if(!$trips) {
 				// update status
-				$pool_trip->status = 'Payment';
+				$pool_trip->status = 'Completed';
 				$pool_trip->save();
 			}
 		}

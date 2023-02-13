@@ -32,7 +32,7 @@
 
 <script src="https://js.stripe.com/v3/"></script>
 <script type="text/javascript">
-  var stripe = Stripe('{{$data["data"]["public_key"]}}');
+  var stripe = Stripe('pk_test_RclvJwXEzIfjnhFGRbFZxXZL');
   var elements = stripe.elements();
   let type = '{{ request()->mode }}';
   if(type == ''){

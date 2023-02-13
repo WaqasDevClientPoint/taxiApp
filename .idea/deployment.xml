@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="154.29.74.233">
+  <component name="PublishConfigData" serverName="pool live">
     <serverData>
-      <paths name="154.29.74.233">
+      <paths name="pool live">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />

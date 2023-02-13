@@ -24,7 +24,7 @@
   {!! Html::style('css/home.css?v='.$version) !!}
   
   {!! Html::style('css/popup.css?v='.$version) !!}
-
+  {!! Html::style('css/bolt.css') !!}
   {!! Html::style('css/jquery.bxslider.css') !!}
   {!! Html::style('css/jquery.sliderTabs.min.css') !!}
   @if (Route::current()->uri() != 'driver_payment')

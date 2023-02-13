@@ -32,6 +32,7 @@
   
   <?php echo Html::style('css/popup.css?v='.$version); ?>
 
+  <?php echo Html::style('css/bolt.css'); ?>
 
   <?php echo Html::style('css/jquery.bxslider.css'); ?>
 

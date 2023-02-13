@@ -68,12 +68,15 @@ class TripsDataTable extends DataTable
                         if (LOGIN_USER_TYPE=='company') {
                             $join->where('driver.company_id',auth('company')->user()->id);
                         }
+                        if (LOGIN_USER_TYPE=='corporate') {
+                            $join->where('rider.corporate_id',auth('corporate')->user()->id);
+                        }
 
                         })
                         ->join('companies', function($join) {
                             $join->on('driver.company_id', '=', 'companies.id');
                         })
-                        ->select(['trips.id as id','driver.first_name as driver_name','rider.first_name as rider_name','trips.pickup_location as pickup_location','trips.drop_location as drop_location','trips.created_at as trip_date','car_type.car_name as car_name','trips.status as status','companies.name as company_name',
+                        ->select(['trips.id as id','rider.mobile_number as rider_mobile_number','driver.mobile_number as mobile_number','driver.first_name as driver_name','rider.first_name as rider_name','trips.pickup_location as pickup_location','trips.drop_location as drop_location','trips.created_at as trip_date','car_type.car_name as car_name','trips.status as status','companies.name as company_name',
                             DB::raw('concat("'.$symbol.'", if ("'.LOGIN_USER_TYPE.'"="company", ( 
                         sum(ROUND((trips.subtotal_fare / currency.rate) * '.$currency_rate.',2)) 
                         + sum(ROUND((trips.driver_peak_amount / currency.rate) * '.$currency_rate.',2)) 
@@ -124,6 +127,9 @@ class TripsDataTable extends DataTable
         $col_list_1 = [
             ['data' => 'id', 'name' => 'trips.id', 'title' => 'Id'],
             ['data' => 'driver_name', 'name' => 'driver.first_name', 'title' => 'Driver Name'],
+            ['data' => 'mobile_number', 'name' => 'driver.mobile_number', 'title' => 'Driver Mobile Number'],
+            ['data' => 'rider_mobile_number', 'name' => 'rider.mobile_number', 'title' => 'Rider Mobile Number'],
+
             ['data' => 'rider_name', 'name' => 'rider.first_name', 'title' => 'Rider Name'],
         ];
 

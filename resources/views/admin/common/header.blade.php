@@ -22,18 +22,24 @@
       <div class="navbar-custom-menu">
          <div id="google_translate_element" class="google-translate-element"></div>
          @php
+            use Illuminate\Support\Facades\DB;
             if(LOGIN_USER_TYPE=='company'){
               $user = Auth::guard('company')->user();
               $company_user = true;
             }elseif (LOGIN_USER_TYPE=='corporate'){
               $user = Auth::guard('corporate')->user();
               $company_user = true;
+              $wallet=DB::table('corporate_wallets')->where('corporate_id',Auth::guard('corporate')->user()->id)->first();
             }else{
               $user = Auth::guard('admin')->user();
               $company_user = false;
             }
+
+
           @endphp
         <ul class="nav navbar-nav">
+
+
           <input type="hidden" id="current_time" value="{{ date('F d, Y H:i:s', time()) }}">
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
@@ -61,6 +67,12 @@
                   {{ (!$company_user)?$user->username:$user->name }}
                   <small>Member since {{ date('M. Y', strtotime($user->created_at)) }}</small>
                 </p>
+                   <p>
+                       @if(LOGIN_USER_TYPE=='corporate')
+
+                       <small>Wallet Amount {{@$wallet->amount}}</small>
+                           @endif
+                   </p>
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Policies;
 use Illuminate\Http\Request;
 use App\DataTables\PoliciesDataTable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -35,18 +36,12 @@ class PolicyController extends Controller
         }
 
         if($request->submit){
-//            dd($request->all());
             $rules = array(
                 'policy_name'    => 'required',
                 'description'     => 'required',
                 'amount_to_spend'      => 'required',
                 'no_of_rides'      => 'required',
-                'start_time_morning'      => 'required',
-                'end_time_morning'      => 'required',
-                'start_time_afternoon'      => 'required',
-                'end_time_afternoon'      => 'required',
-                'start_time_evening'      => 'required',
-                'end_time_evening'      => 'required',
+
 
             );
 
@@ -56,12 +51,7 @@ class PolicyController extends Controller
                 'description' => 'Description',
                 'amount_to_spend'      => 'Amount to spend',
                 'no_of_rides'      => 'No of Rides',
-                'start_time_morning'      => 'Morning Start Time',
-                'end_time_morning'      => 'Morning End Time',
-                'start_time_afternoon'      => 'Afternoon Start Time',
-                'end_time_afternoon'      => 'Afternoon End Time',
-                'start_time_evening'      => 'Evening Start Time',
-                'end_time_evening'      => 'Evening End Time',
+
             );
 
             // Edit Rider Validation Custom Fields message
@@ -80,12 +70,114 @@ class PolicyController extends Controller
             $user->policy_name	          = $request->policy_name;
             $user->policy_description	  = $request->description;
             $user->no_of_rides	          = $request->no_of_rides;
-            $user->morning                = $request->start_time_morning. '-' .$request->start_time_morning;
-            $user->afternoon              = $request->start_time_afternoon. '-' .$request->start_time_afternoon;
-            $user->evening                = $request->start_time_evening. '-' .$request->start_time_evening;
-            $user->corporate_id           = Auth('corporate')->id();
+            $user->amount_to_spend	          = $request->no_of_rides;
+            $user->amount_to_spend_frequency = $request->amount_to_spend_frequency;
+            $user->duration	          = $request->duration;
+
+            $user->corporate_id	          = Auth('corporate')->id();
 
             $user->save();
+
+            foreach($request->monday_start_time as $key=>$value){
+                $dayTime='';
+                if($key==0){
+                    $dayTime='morning';
+                }elseif($key==1){
+                    $dayTime='afternoon';
+                }else{
+                    $dayTime='evening';
+                }
+
+                DB::table('bookings_time')->insert(
+                    array('policy_id' => $user->id, 'day' => 'monday','dayTime' =>$dayTime,'time'=> $value .'-'.$request->monday_end_time[$key])
+                );
+            }
+            foreach($request->tuesday_start_time as $key=>$value){
+                $dayTime='';
+                if($key==0){
+                    $dayTime='morning';
+                }elseif($key==1){
+                    $dayTime='afternoon';
+                }else{
+                    $dayTime='evening';
+                }
+
+                DB::table('bookings_time')->insert(
+                    array('policy_id' => $user->id, 'day' => 'tuesday','dayTime' =>$dayTime,'time'=> $value .'-'.$request->tuesday_end_time[$key])
+                );
+            }
+            foreach($request->wednesday_start_time as $key=>$value){
+                $dayTime='';
+                if($key==0){
+                    $dayTime='morning';
+                }elseif($key==1){
+                    $dayTime='afternoon';
+                }else{
+                    $dayTime='evening';
+                }
+
+                DB::table('bookings_time')->insert(
+                    array('policy_id' => $user->id, 'day' => 'wednesday','dayTime' =>$dayTime,'time'=> $value .'-'.$request->wednesday_end_time[$key])
+                );
+            }
+            foreach($request->thursday_start_time as $key=>$value){
+                $dayTime='';
+                if($key==0){
+                    $dayTime='morning';
+                }elseif($key==1){
+                    $dayTime='afternoon';
+                }else{
+                    $dayTime='evening';
+                }
+
+                DB::table('bookings_time')->insert(
+                    array('policy_id' => $user->id, 'day' => 'thursday','dayTime' =>$dayTime,'time'=> $value .'-'.$request->thursday_end_time[$key])
+                );
+            }
+            foreach($request->friday_start_time as $key=>$value){
+                $dayTime='';
+                if($key==0){
+                    $dayTime='morning';
+                }elseif($key==1){
+                    $dayTime='afternoon';
+                }else{
+                    $dayTime='evening';
+                }
+
+                DB::table('bookings_time')->insert(
+                    array('policy_id' => $user->id, 'day' => 'friday','dayTime' =>$dayTime,'time'=> $value .'-'.$request->friday_end_time[$key])
+                );
+            }
+            foreach($request->saturday_start_time as $key=>$value){
+                $dayTime='';
+                if($key==0){
+                    $dayTime='morning';
+                }elseif($key==1){
+                    $dayTime='afternoon';
+                }else{
+                    $dayTime='evening';
+                }
+
+                DB::table('bookings_time')->insert(
+                    array('policy_id' => $user->id, 'day' => 'saturday','dayTime' =>$dayTime,'time'=> $value .'-'.$request->saturday_end_time[$key])
+                );
+            }
+            foreach($request->sunday_start_time as $key=>$value){
+                $dayTime='';
+                if($key==0){
+                    $dayTime='morning';
+                }elseif($key==1){
+                    $dayTime='afternoon';
+                }else{
+                    $dayTime='evening';
+                }
+
+                DB::table('bookings_time')->insert(
+                    array('policy_id' => $user->id, 'day' => 'sunday','dayTime' =>$dayTime,'time'=> $value .'-'.$request->sunday_end_time[$key])
+                );
+            }
+
+
 
             flashMessage('success', 'Policy Created Successfully');
         }

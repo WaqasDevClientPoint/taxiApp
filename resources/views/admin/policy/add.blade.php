@@ -100,20 +100,7 @@
 
     // });
     // const toggles = document.querySelectorAll(".toggle");
-    function handleClick(obj,id){
 
-        obj.classList.toggle("is-open");
-
-        var status=obj.classList.contains('is-open')
-        var content=document.getElementById(id);
-
-        if(status==true){
-            content.style.display="block";
-        }
-        else{
-            content.style.display="none";
-        }
-    }
 
 
 </script>
@@ -177,8 +164,11 @@
                                         <label class="switch" style="float: right;">
                                             <input type="checkbox" class="toggle" onclick='handleClick(this,"speeding-body");'>
                                             <span class="slider round"></span>
+                                            <input type="hidden" name="spending_allowance_checkbox">
+
                                         </label>
-                                        <p class="card-text">Limit the maximum amount of money a person can spend</p>
+                                            <p class="card-text">Limit the maximum amount of money a person can spend within
+                                                a given period of time</p>
 
                                         <div class="speeding-body"  id="speeding-body" style="display: none">
 
@@ -196,13 +186,12 @@
 
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <div class="input-group">
-                                                        <select name="duration" class="form-control">
-                                                            <option value="daily">Per Day</option>
-                                                            <option  value="week">Per Week</option>
-                                                            <option  value="month">Per Month</option>
-                                                            <option  value="year">Per Year</option>
-
+                                                        <select name="amount_to_spend_frequency" class="form-control" id="inputGroupSelect01">
+                                                            <option selected>Choose...</option>
+                                                            <option value="year">Year</option>
+                                                            <option value="month">Month</option>
+                                                            <option value="week">Week</option>
+                                                            <option value="day">Day</option>
                                                         </select>
 
                                                     </div>
@@ -215,9 +204,7 @@
 
                                         </div>
                                     </div>
-
-                                </div>
-                                {{-- **Spending allowance end** --}}
+                                    {{-- **Spending allowance end** --}}
 
                                 <br>
                                 {{-- Number of rides --}}
@@ -227,6 +214,8 @@
                                         <label class="switch" style="float: right;">
                                             <input type="checkbox" class="toggle" onclick='handleClick(this,"rides-body");'>
                                             <span class="slider round"></span>
+                                            <input type="hidden" name="no_of_rides_checkbox">
+
                                         </label>
                                         <p class="card-text">Limit the maximum number of rides a person</p>
 
@@ -275,104 +264,430 @@
                                         <label class="switch" style="float: right;">
                                             <input type="checkbox" class="toggle" onclick='handleClick(this,"ride-time-body");'>
                                             <span class="slider round"></span>
+                                            <input type="hidden" name="ride_day_and_time_checkbox">
                                         </label>
                                         <p class="card-text">Restrict when users can ride</p>
 
-                                        <div class="ride-time-body"  id="ride-time-body" style="display: none">
-
-                                            <div class="ride-custom-time">
-                                                <div>
-                                                    <label>Morning</label>
-
-                                                    <br>
-                                                    <div>
-                                                        <table class="table border-0" style="width:100%;padding: 10px">
-                                                            <tr>
-                                                                <th style="width:40%">Start Time</th>
-                                                                <th style="width:40%">End Time</th>
-                                                                <th style="width:20%"></th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="time" name="start_time_morning" class="form-control" id="start-time" >
-                                                                    <span class="text-danger">{{ $errors->first('start_time_morning') }}</span>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" name="end_time_morning" class="form-control" id="end-time" >
-                                                                    <span class="text-danger">{{ $errors->first('end_time_morning') }}</span>
-                                                                </td>
-
-                                                            </tr>
-                                                        </table>
+                                            <div class="ride-time-body" id="ride-time-body" style="display: none">
+                                                <div class="ride-custom-time">
+                                                    <div class="alert">
+                                                        <i class="fa fa-info"></i> <span>Hour restriction for a single day can’t extend beyond 23:59. To add hour restriction that go beyond 24:00, select the next day and enter the appropriate times.</span>
                                                     </div>
-                                                </div>
-                                                {{-- Tuesday --}}
-                                                <div>
-                                                    <label>Afternoon</label>
-
-                                                    <br>
+                                                    {{-- Monday --}}
                                                     <div>
-                                                        <table class="table border-0" style="width:100%;padding: 10px">
-                                                            <tr>
-                                                                <th style="width:40%">Start Time</th>
-                                                                <th style="width:40%">End Time</th>
-                                                                <th style="width:20%"></th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="time" name="start_time_afternoon" class="form-control" id="start-time" >
-                                                                    <span class="text-danger">{{ $errors->first('start_time_afternoon') }}</span>
+                                                        <label>Monday</label>
+                                                        <label class="switch" style="float: right;">
+                                                            <input type="checkbox" onchange='handleClick(this,"ride-time-body-monday");'>
+                                                            <span class="slider round"></span>
+                                                            <input type="hidden" name="ride_day_and_time_monday_checkbox">
 
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" name="end_time_afternoon" class="form-control" id="end-time" >
-                                                                    <span class="text-danger">{{ $errors->first('end_time_afternoon') }}</span>
+                                                        </label>
+                                                        <br>
+                                                        <div class="ride-time-body-monday" id="ride-time-body-monday" style="display: none">
+                                                            <table class="table border-0" style="width:100%;padding: 10px">
+                                                                <tr>
+                                                                    <th style="width:20%">Day Time</th>
+                                                                    <th style="width:40%">Start Time</th>
+                                                                    <th style="width:40%">End Time</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Morning
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="monday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="monday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
 
-                                                                </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Afternoon
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="monday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="monday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
 
-                                                            </tr>
-                                                        </table>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Evening
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="monday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="monday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                {{-- Wednesday --}}
-                                                <div>
-                                                    <label>Evening</label>
-
-                                                    <br>
+                                                    {{-- Tuesday --}}
                                                     <div>
-                                                        <table class="table border-0" style="width:100%;padding: 10px">
-                                                            <tr>
-                                                                <th style="width:40%">Start Time</th>
-                                                                <th style="width:40%">End Time</th>
-                                                                <th style="width:20%"></th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="time" name="start_time_evening" class="form-control" id="start-time" >
-                                                                    <span class="text-danger">{{ $errors->first('start_time_evening') }}</span>
+                                                        <label>Tuesday</label>
+                                                        <label class="switch" style="float: right;">
+                                                            <input type="checkbox" onchange='handleClick(this,"ride-time-body-tuesday");'>
+                                                            <span class="slider round"></span>
+                                                            <input type="hidden" name="ride_day_and_time_tuesday_checkbox">
 
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" name="end_time_evening" class="form-control" id="end-time" >
-                                                                    <span class="text-danger">{{ $errors->first('end_time_evening') }}</span>
+                                                        </label>
+                                                        <br>
+                                                        <div class="ride-time-body-tuesday" id="ride-time-body-tuesday" style="display: none">
+                                                            <table class="table border-0" style="width:100%;padding: 10px">
+                                                                <tr>
+                                                                    <th style="width:20%">Day Time</th>
+                                                                    <th style="width:40%">Start Time</th>
+                                                                    <th style="width:40%">End Time</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Morning
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="tuesday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="tuesday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
 
-                                                                </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Afternoon
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="tuesday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="tuesday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
 
-                                                            </tr>
-                                                        </table>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Evening
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="tuesday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="tuesday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
                                                     </div>
+
+                                                    {{-- Wednesday --}}
+                                                    <div>
+                                                        <label>Wednesday</label>
+                                                        <label class="switch" style="float: right;">
+                                                            <input type="checkbox" onchange='handleClick(this,"ride-time-body-wednesday");'>
+                                                            <span class="slider round"></span>
+                                                            <input type="hidden" name="ride_day_and_time_wednesday_checkbox">
+
+                                                        </label>
+                                                        <br>
+                                                        <div class="ride-time-body-wednesday" id="ride-time-body-wednesday" style="display: none">
+                                                            <table class="table border-0" style="width:100%;padding: 10px">
+                                                                <tr>
+                                                                    <th style="width:20%">Day Time</th>
+                                                                    <th style="width:40%">Start Time</th>
+                                                                    <th style="width:40%">End Time</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Morning
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="wednesday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="wednesday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Afternoon
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="wednesday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="wednesday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Evening
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="wednesday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="wednesday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Thursday --}}
+                                                    <div>
+                                                        <label>Thursday</label>
+                                                        <label class="switch" style="float: right;">
+                                                            <input type="checkbox" onchange='handleClick(this,"ride-time-body-thursday");'>
+                                                            <span class="slider round"></span>
+                                                            <input type="hidden" name="ride_day_and_time_thursday_checkbox">
+
+                                                        </label>
+                                                        <br>
+                                                        <div class="ride-time-body-thursday" id="ride-time-body-thursday" style="display: none">
+                                                            <table class="table border-0" style="width:100%;padding: 10px">
+                                                                <tr>
+                                                                    <th style="width:20%">Day Time</th>
+                                                                    <th style="width:40%">Start Time</th>
+                                                                    <th style="width:40%">End Time</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Morning
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="thursday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="thursday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Afternoon
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="thursday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="thursday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Evening
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="thursday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="thursday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Friday --}}
+                                                    <div>
+                                                        <label>Friday</label>
+                                                        <label class="switch" style="float: right;">
+                                                            <input type="checkbox" onchange='handleClick(this,"ride-time-body-friday");'>
+                                                            <span class="slider round"></span>
+                                                            <input type="hidden" name="ride_day_and_time_friday_checkbox">
+
+                                                        </label>
+                                                        <br>
+                                                        <div class="ride-time-body-friday" id="ride-time-body-friday" style="display: none">
+                                                            <table class="table border-0" style="width:100%;padding: 10px">
+                                                                <tr>
+                                                                    <th style="width:20%">Day Time</th>
+                                                                    <th style="width:40%">Start Time</th>
+                                                                    <th style="width:40%">End Time</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Morning
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="friday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="friday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Afternoon
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="friday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="friday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Evening
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="friday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="friday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Saturday --}}
+                                                    <div>
+                                                        <label>Saturday</label>
+                                                        <label class="switch" style="float: right;">
+                                                            <input type="checkbox" onchange='handleClick(this,"ride-time-body-saturday");'>
+                                                            <span class="slider round"></span>
+                                                            <input type="hidden" name="ride_day_and_time_saturday_checkbox">
+
+
+                                                        </label>
+                                                        <br>
+                                                        <div class="ride-time-body-saturday" id="ride-time-body-saturday" style="display: none">
+                                                            <table class="table border-0" style="width:100%;padding: 10px">
+                                                                <tr>
+                                                                    <th style="width:20%">Day Time</th>
+                                                                    <th style="width:40%">Start Time</th>
+                                                                    <th style="width:40%">End Time</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Morning
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="saturday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="saturday_end_time[]"  class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Afternoon
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="saturday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="saturday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Evening
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="saturday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="saturday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Sunday --}}
+                                                    <div>
+                                                        <label>Sunday</label>
+                                                        <label class="switch" style="float: right;">
+
+                                                            <input type="checkbox" onchange='handleClick(this,"ride-time-body-sunday");'>
+                                                            <span class="slider round"></span>
+                                                            <input type="hidden" name="ride_day_and_time_sunday_checkbox">
+
+                                                        </label>
+                                                        <br>
+                                                        <div class="ride-time-body-sunday" id="ride-time-body-sunday" style="display: none">
+                                                            <table class="table border-0" style="width:100%;padding: 10px">
+                                                                <tr>
+                                                                    <th style="width:20%">Day Time</th>
+                                                                    <th style="width:40%">Start Time</th>
+                                                                    <th style="width:40%">End Time</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Morning
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="sunday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="sunday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Afternoon
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="sunday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="sunday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Evening
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="sunday_start_time[]" class="form-control" id="start-time" >
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="time" name="sunday_end_time[]" class="form-control" id="end-time" >
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
-                                </div>
+                                    {{-- **Ride day and time end**--}}
 
+                                    <br>
                                 <div class="box-footer text-center">
                                     <button type="submit" class="btn btn-info" name="submit" value="submit">Submit</button>
                                 </div>
-                                {!! Form::close() !!}
+
                             </div>
+                            {!! Form::close() !!}
+
                         </div>
                     </div>
                 </div>
@@ -436,6 +751,24 @@
     </div>
 @endsection
 @push('scripts')
+    <script>
+    function handleClick(obj,id){
+
+        obj.classList.toggle("is-open");
+
+    var status=obj.classList.contains('is-open')
+    var content=document.getElementById(id);
+
+    if(status==true){
+    content.style.display="block";
+    $(obj).next().next().val('true');
+    }
+    else{
+    content.style.display="none";
+        $(obj).next().next().val('false');
+    }
+    }
+    </script>
     {{--    <link rel="stylesheet" href="{{ url('css/buttons.dataTables.css') }}">--}}
     {{--    <script src="{{ url('js/dataTables.buttons.js') }}"></script>--}}
     {{--    <script src="{{ url('js/buttons.server-side.js') }}"></script>--}}

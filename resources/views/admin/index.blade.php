@@ -23,7 +23,7 @@
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <a href="{{ url('admin/rider') }}" class="small-box">
+          <a href="{{ url('admin/rider') }}" style="background-color:#d1d1fb" class="small-box">
             <div class="inner">
               <p>Total Riders</p>
               <h3>{{ $total_rider }}</h3>
@@ -37,7 +37,7 @@
         </div>
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+          <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" style="background-color:#b4e0e8" class="small-box">
             <div class="inner">
               <p>Total Trips</p>
               <h3>{{$total_trips}}</h3>
@@ -51,7 +51,7 @@
         </div>
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <a href="{{ url('admin/rider') }}" class="small-box">
+          <a href="{{ url('admin/rider') }}" style="background-color:#C1DEAE" class="small-box">
             <div class="inner">
               <p>Today Riders</p>
               <h3>{{ $today_rider_count }}</h3>
@@ -65,7 +65,7 @@
         </div>
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+          <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" style="background-color:#D1E3FA" class="small-box">
             <div class="inner">
               <p>Today Trips</p>
               <h3>{{$today_trips}}</h3>
@@ -89,7 +89,7 @@
 
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" style="background-color:#f7cbb2" class="small-box">
           <div class="inner">
             <p>Total Earnings</p>
             <h3> {{ html_string($currency_code) }} {{ round($total_revenue) }}</h3>
@@ -123,7 +123,7 @@
       <!-- ./col -->
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url('admin/rider') }}" class="small-box">
+        <a href="{{ url('admin/rider') }}" style="background-color:#d1d1fb" class="small-box">
           <div class="inner">
             <p>Total Riders</p>
             <h3>{{ $total_rider }}</h3>
@@ -142,7 +142,7 @@
 
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box">
+        <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" style="background-color:#E5D1FA" class="small-box">
           <div class="inner">
             <p>Total Drivers</p>
             <h3>{{$total_driver}}</h3>
@@ -159,7 +159,7 @@
 
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}"style="background-color:#b4e0e8" class="small-box">
           <div class="inner">
             <p>Total Trips</p>
             <h3>{{$total_trips}}</h3>
@@ -181,7 +181,7 @@
       @if(LOGIN_USER_TYPE!='corporate')
         <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" style="background-color:#b4e0e8" class="small-box">
           <div class="inner">
             <p>Today Earnings</p>
             <h3> {{ html_string($currency_code) }} {{ round($today_revenue) }}</h3>
@@ -214,7 +214,7 @@
       @if(LOGIN_USER_TYPE!='company' && LOGIN_USER_TYPE!='corporate')
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url('admin/rider') }}" class="small-box">
+        <a href="{{ url('admin/rider') }}" style="background-color:#C1DEAE" class="small-box">
           <div class="inner">
             <p>Today Riders</p>
             <h3>{{ $today_rider_count }}</h3>
@@ -232,7 +232,7 @@
 
         <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" class="small-box">
+        <a href="{{ url(LOGIN_USER_TYPE.'/driver') }}" style="background-color:#E8E8A6" class="small-box">
           <div class="inner">
             <p>Today Drivers</p>
             <h3>{{$today_driver_count}}</h3>
@@ -249,7 +249,7 @@
 
         <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" class="small-box">
+        <a href="{{ url(LOGIN_USER_TYPE.'/trips') }}" style="background-color:#D1E3FA" class="small-box">
           <div class="inner">
             <p>Today Trips</p>
             <h3>{{$today_trips}}</h3>
